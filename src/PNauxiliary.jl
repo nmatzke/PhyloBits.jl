@@ -4,7 +4,7 @@ __precompile__(true)
 
 print("PhyloBits: loading PNauxiliary dependencies...")
 using Printf						# for @printf
-using DataFrame					# for DataFrame
+using DataFrames					# for DataFrame
 using PhyloBits.PNtypes	# for Node, HybridNetwork
 
 print("...done.\n")
