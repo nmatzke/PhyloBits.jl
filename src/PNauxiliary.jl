@@ -1727,3 +1727,8 @@ function citation()
     println("\n")
     println("doi = {}}")
 end
+
+
+end # END module PNauxiliary
+
+
