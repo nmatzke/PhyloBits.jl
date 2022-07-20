@@ -1,6 +1,12 @@
 module PNmanipulateNet
 __precompile__(true)
 
+
+print("PhyloBits: loading PNmanipulateNet dependencies...")
+using PhyloBits.PNtypes	# for HybridNetwork
+print("...done.\n")
+
+
 export isTree, directEdges!, traverseDirectEdges!, getParents, getMajorParentEdge, getChildren
 
 
