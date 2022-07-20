@@ -1,7 +1,7 @@
 module PNtypes
 __precompile__(true)
 
-export ANode, Edge, Node, Partition, Network, HybridNetwork, Base.show, QuartetNetwork, AQuartet, Quartet, QuartetT, quartetrank, nchoose1234, DataCF, EdgeParts, RootMismatch
+export ANode, Edge, Node, Partition, Network, HybridNetwork, QuartetNetwork, AQuartet, Quartet, QuartetT, quartetrank, nchoose1234, DataCF, EdgeParts, RootMismatch
 
 
 # Types for Julia implementation of pseudolikelihood estimation (Stage2)

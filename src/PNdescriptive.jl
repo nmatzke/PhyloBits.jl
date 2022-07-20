@@ -1,7 +1,7 @@
 module PNdescriptive
 __precompile__(true)
 
-export tipLabels, Base.show
+export tipLabels
 
 # functions to describe a HybridNetwork object to avoid accessing the attributes directly
 # Claudia August 2015
