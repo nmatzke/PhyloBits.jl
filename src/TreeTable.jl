@@ -28,21 +28,22 @@
 #######################################################
 
 module TreeTable
-__precompile__(false)  # will cause using / import to load it directly into the 
+__precompile__(true)  # will cause using / import to load it directly into the 
                        # current process and skip the precompile and caching. 
                        # This also thereby prevents the module from being 
                        # imported by any other precompiled module.
                        # https://docs.julialang.org/en/v1/manual/modules/
 print("PhyloBits: loading TreeTable.jl dependencies...")
 
-using PhyloBits.TrUtils # for e.g. flat2
+#using PhyloBits.PNtypes # for e.g. flat2
+#using PhyloBits.TrUtils # for e.g. flat2
 using DataFrames			# for e.g. DataFrame()
 #using PhyloNetworks		# for e.g. readTopology()
 using SpecialFunctions			# for e.g. logfactorial()
 
 print("...done.\n")
 
-export get_nodenumbers_above_node, get_postorder_nodenumbers_above_node, initialize_edgematrix, get_pruningwise_postorder_edgematrix, get_LR_uppass_edgematrix, get_LR_downpass_edgematrix, get_LR_uppass_nodeIndexes, get_LR_downpass_nodeIndexes, get_Rnodenums, get_nodeIndex_PNnumber, get_nodeIndex_from_PNnumber, get_nonrootnodes, get_nonrootnodes_trdf, nodetimes, prt, get_taxa_descending_from_each_node, isTip_TF, get_NodeIndexes_from_edge, get_NodeIndex_df_by_tree_edges, get_node_heights, get_node_ages, get_root_age, branching_times, bd_liks, bd_liks_trdf, get_treelength(tr), ML_yule_birthRate
+export get_nodenumbers_above_node, get_postorder_nodenumbers_above_node, initialize_edgematrix, get_pruningwise_postorder_edgematrix, get_LR_uppass_edgematrix, get_LR_downpass_edgematrix, get_LR_uppass_nodeIndexes, get_LR_downpass_nodeIndexes, get_Rnodenums, get_nodeIndex_PNnumber, get_nodeIndex_from_PNnumber, get_nonrootnodes, get_nonrootnodes_trdf, nodetimes, prt, get_taxa_descending_from_each_node, isTip_TF, get_NodeIndexes_from_edge, get_NodeIndex_df_by_tree_edges, get_node_heights, get_node_ages, get_root_age, branching_times, bd_liks, bd_liks_trdf, get_treelength, ML_yule_birthRate
 
 
 

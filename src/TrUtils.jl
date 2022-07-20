@@ -1,5 +1,5 @@
 module TrUtils
-__precompile__(false)  # will cause using / import to load it directly into the 
+__precompile__(true)  # will cause using / import to load it directly into the 
                        # current process and skip the precompile and caching. 
                        # This also thereby prevents the module from being 
                        # imported by any other precompiled module.
