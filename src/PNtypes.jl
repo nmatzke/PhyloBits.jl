@@ -1,9 +1,13 @@
 module PNtypes
 __precompile__(true)
 
+print("PhyloBits: loading PNtypes dependencies...")
+using StaticArrays
+print("...done.\n")
+
+
 export ANode, Edge, Node, Partition, Network, HybridNetwork, QuartetNetwork, AQuartet, Quartet, QuartetT, quartetrank, nchoose1234, DataCF, EdgeParts, RootMismatch
 
-using StaticArrays
 
 
 # Types for Julia implementation of pseudolikelihood estimation (Stage2)

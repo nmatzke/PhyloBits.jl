@@ -60,6 +60,7 @@ Pkg.add(PackageSpec(path="/GitHub/PhyloBits.jl"))
 # GitHub Installation
 using Pkg
 Pkg.add(Pkg.PackageSpec(url="https://github.com/nmatzke/PhyloBits.jl"))
+using PhyloBits
 
 # Add to another package:
 cd("/GitHub/BioGeoJulia.jl")
