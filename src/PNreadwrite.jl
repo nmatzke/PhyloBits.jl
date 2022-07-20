@@ -1,6 +1,11 @@
 module PNreadwrite
 __precompile__(true)
 
+print("PhyloBits: loading PNreadwrite dependencies...")
+using PhyloBits.PNtypes	# for HybridNetwork
+print("...done.\n")
+
+
 export peekskip, readskip!, advance!, readnexuscomment, readnodename, readFloat, isValidSymbol, parseRemainingSubtree!, parseHybridNode!, parseTreeNode!, getDataValue!, parseEdgeData!, synchronizePartnersData!, readSubtree!, readTopology, checkNumHybEdges!, check2HybEdges, solvePolytomyRecursive!, solvePolytomy!, addChild!, expandChild!, cleanAfterRead!, storeHybrids!, updateAllReadTopology!, cleanAfterReadAll!, readTopologyUpdate, readTopologyLevel1, checkRootPlace!, writeSubTree!, writeTopologyLevel1, updateRoot!, canBeRoot, undoRoot!, readSnaqNetwork, cleanBL!, readMultiTopologyLevel1, readMultiTopology, writeMultiTopology, writeTopology, hybridlambdaformat, nameinternalnodes!
 
 
