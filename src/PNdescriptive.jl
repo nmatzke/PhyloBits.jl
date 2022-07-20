@@ -1,6 +1,12 @@
 module PNdescriptive
 __precompile__(true)
 
+print("PhyloBits: loading PNdescriptive dependencies...")
+using PhyloBits.PNtypes	# for HybridNetwork
+print("...done.\n")
+
+
+
 export tipLabels
 
 # functions to describe a HybridNetwork object to avoid accessing the attributes directly
