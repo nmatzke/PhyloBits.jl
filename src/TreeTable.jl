@@ -35,8 +35,8 @@ __precompile__(true)  # will cause using / import to load it directly into the
                        # https://docs.julialang.org/en/v1/manual/modules/
 print("PhyloBits: loading TreeTable.jl dependencies...")
 
-#using PhyloBits.PNtypes # for e.g. flat2
-#using PhyloBits.TrUtils # for e.g. flat2
+using PhyloBits.PNtypes # for e.g. HybridNetwork
+using PhyloBits.TrUtils # for e.g. flat2
 using DataFrames			# for e.g. DataFrame()
 #using PhyloNetworks		# for e.g. readTopology()
 using SpecialFunctions			# for e.g. logfactorial()

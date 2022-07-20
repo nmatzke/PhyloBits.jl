@@ -1,3 +1,8 @@
+module PNmanipulateNet
+__precompile__(true)
+
+export isTree, directEdges!, traverseDirectEdges!, getParents, getMajorParentEdge, getChildren
+
 
 # Source:
 # https://github.com/crsl4/PhyloNetworks.jl/blob/08eab8b17a171db74e08b92708913582cd30b526/src/snaq_optimization.jl
@@ -160,3 +165,6 @@ function getChildren(node::Node)
     end
     return children
 end
+
+
+end # END module PNmanipulateNet

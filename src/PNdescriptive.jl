@@ -1,3 +1,8 @@
+module PNdescriptive
+__precompile__(true)
+
+export tipLabels, Base.show
+
 # functions to describe a HybridNetwork object to avoid accessing the attributes directly
 # Claudia August 2015
 
@@ -89,3 +94,5 @@ function Base.show(io::IO, obj::Edge)
     end
     println(io, disp)
 end
+
+end # END module PNdescriptive

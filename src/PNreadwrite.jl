@@ -1,3 +1,9 @@
+module PNmanipulateNet
+__precompile__(true)
+
+export peekskip, readskip!, advance!, readnexuscomment, readnodename, readFloat, isValidSymbol, parseRemainingSubtree!, parseHybridNode!, parseTreeNode!, getDataValue!, parseEdgeData!, synchronizePartnersData!, readSubtree!, readTopology, checkNumHybEdges!, check2HybEdges, solvePolytomyRecursive!, solvePolytomy!, addChild!, expandChild!, cleanAfterRead!, storeHybrids!, updateAllReadTopology!, cleanAfterReadAll!, readTopologyUpdate, readTopologyLevel1, checkRootPlace!, writeSubTree!, writeTopologyLevel1, updateRoot!, canBeRoot, undoRoot!, readSnaqNetwork, cleanBL!, readMultiTopologyLevel1, readMultiTopology, writeMultiTopology, writeTopology, hybridlambdaformat, nameinternalnodes!
+
+
 # functions to read/write networks topologies
 
 # peek the next non-white-space char
@@ -1635,3 +1641,6 @@ function nameinternalnodes!(net::HybridNetwork, prefix)
   end
   return net
 end
+
+
+end # END module PNmanipulateNet

@@ -1,3 +1,8 @@
+module PNtypes
+__precompile__(true)
+
+export ANode, Edge, Node, Partition, Network, HybridNetwork, Base.show, QuartetNetwork, AQuartet, Quartet, QuartetT, quartetrank, nchoose1234, DataCF, EdgeParts, RootMismatch
+
 
 # Types for Julia implementation of pseudolikelihood estimation (Stage2)
 # Claudia August 2014
@@ -550,3 +555,10 @@ struct RootMismatch <: Exception
 end
 RootMismatch() = RootMismatch("")
 Base.showerror(io::IO, e::RootMismatch) = print(io, "RootMismatch: ", e.msg);
+
+
+
+
+
+end # END module PNtypes
+

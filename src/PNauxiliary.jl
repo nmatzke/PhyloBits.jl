@@ -1,8 +1,12 @@
+module PNauxiliary
+__precompile__(true)
+
+export setCHECKNET, coupon, binom, approxEq, isEqual, addBL, multiplygammas, setNode!, getChild, getParent, getPartner, edgerelation, setEdge!, getOtherNode, getMajorParent, getMinorParent, getChildEdge, getIndex, getIndexNode, getIndexEdge, getIndexNode, getIndexHybrid, getHybridEdge, getConnectingEdge, isconnected, isEdgeNumIn, isNodeNumIn, pushNode!, pushEdge!, pushHybrid!, deleteNode!, removeHybrid!, removeLeaf!, deleteIntNode!, searchHybridNode, searchHybridEdge, printEdges, printNodes, hybridEdges, removeEdge!, setLength!, setBranchLength!, setGamma!, setmultiplegammas!, setGammaBLfromGammaz!, numTreeEdges, numIntTreeEdges, whichPartition, printPartitions, isPartitionInNet, checkNet, printEverything, isBadTriangle, isPartitionInNet, switchHybridNode!, assignhybridnames!, sorttaxa!, sorttaxaCFperm!, setlengths!, getlengths, hashybridladder, shrink2cycles!, shrink2cycleat!, shrink3cycles!, shrink3cycleat!, adjacentedges, citation
+
 # auxiliary functions for all the other methods
 # originally in functions.jl
 # Claudia February 2015
 #####################
-
 function setCHECKNET(b::Bool)
     global CHECKNET
     CHECKNET = b
