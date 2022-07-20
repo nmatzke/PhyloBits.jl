@@ -1,3 +1,8 @@
+name = "PhyloBits"
+uuid = "d8844a15-86e7-4f2e-bb1d-495fc7c0502a"
+authors = ["nmatzke <matzke@berkeley.edu>"]
+version = "0.1.0"
+
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"

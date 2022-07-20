@@ -53,10 +53,19 @@ include("TreeTable.jl")				# for prt() tree tables (tree dataframes, trdfs), bd_
 
 
 """
-# Installation:
+# Local nstallation:
 using Pkg
 Pkg.add(PackageSpec(path="/GitHub/PhyloBits.jl"))
 
+# GitHub Installation
+using Pkg
+Pkg.add(Pkg.PackageSpec(url="https://github.com/nmatzke/PhyloBits.jl"))
+
+# Add to another package:
+cd("/GitHub/BioGeoJulia.jl")
+]
+activate .
+add https://github.com/BioJulia/BioJuliaRegistry.git
 
 # Loading:
 Pkg.instantiate()
