@@ -1,6 +1,12 @@
 module PNauxiliary
 __precompile__(true)
 
+
+print("PhyloBits: loading PNauxiliary dependencies...")
+using PhyloBits.PNtypes	# for Node, HybridNetwork
+print("...done.\n")
+
+
 export setCHECKNET, coupon, binom, approxEq, isEqual, addBL, multiplygammas, setNode!, getChild, getParent, getPartner, edgerelation, setEdge!, getOtherNode, getMajorParent, getMinorParent, getChildEdge, getIndex, getIndexNode, getIndexEdge, getIndexNode, getIndexHybrid, getHybridEdge, getConnectingEdge, isconnected, isEdgeNumIn, isNodeNumIn, pushNode!, pushEdge!, pushHybrid!, deleteNode!, removeHybrid!, removeLeaf!, deleteIntNode!, searchHybridNode, searchHybridEdge, printEdges, printNodes, hybridEdges, removeEdge!, setLength!, setBranchLength!, setGamma!, setmultiplegammas!, setGammaBLfromGammaz!, numTreeEdges, numIntTreeEdges, whichPartition, printPartitions, isPartitionInNet, checkNet, printEverything, isBadTriangle, isPartitionInNet, switchHybridNode!, assignhybridnames!, sorttaxa!, sorttaxaCFperm!, setlengths!, getlengths, hashybridladder, shrink2cycles!, shrink2cycleat!, shrink3cycles!, shrink3cycleat!, adjacentedges, citation
 
 # auxiliary functions for all the other methods
