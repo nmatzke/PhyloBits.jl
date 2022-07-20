@@ -55,12 +55,11 @@ include("TreeTable.jl")				# for prt() tree tables (tree dataframes, trdfs), bd_
 """
 # Local nstallation:
 using Pkg
-Pkg.add(PackageSpec(path="/GitHub/PhyloBits.jl"))
+Pkg.add(PackageSpec(path="/GitHub/PhyloBits.jl")); using PhyloBits
 
 # GitHub Installation
 using Pkg
-Pkg.add(Pkg.PackageSpec(url="https://github.com/nmatzke/PhyloBits.jl"))
-using PhyloBits
+Pkg.add(Pkg.PackageSpec(url="https://github.com/nmatzke/PhyloBits.jl")); using PhyloBits
 
 # Add to another package:
 cd("/GitHub/BioGeoJulia.jl")
