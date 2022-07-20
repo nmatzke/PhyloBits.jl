@@ -1,6 +1,7 @@
 module PNtypes
 __precompile__(true)
 
+using StaticArrays: SVector
 export ANode, Edge, Node, Partition, Network, HybridNetwork, QuartetNetwork, AQuartet, Quartet, QuartetT, quartetrank, nchoose1234, DataCF, EdgeParts, RootMismatch
 
 
