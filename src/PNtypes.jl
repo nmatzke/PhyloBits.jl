@@ -1,8 +1,9 @@
 module PNtypes
 __precompile__(true)
 
-using StaticArrays: SVector
 export ANode, Edge, Node, Partition, Network, HybridNetwork, QuartetNetwork, AQuartet, Quartet, QuartetT, quartetrank, nchoose1234, DataCF, EdgeParts, RootMismatch
+
+using StaticArrays
 
 
 # Types for Julia implementation of pseudolikelihood estimation (Stage2)

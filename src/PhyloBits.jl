@@ -12,7 +12,7 @@ using Distributed 	# for workers, spawnat :any, etc.
 using Hwloc					# for Hwloc.num_physical_cores(), Hwloc.num_virtual_cores()
 using SpecialFunctions
 using StatsBase
-using StaticArrays
+using StaticArrays	# for SVector
 using DataFrames
 using Printf
 
