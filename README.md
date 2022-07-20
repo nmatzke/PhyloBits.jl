@@ -1,2 +1,2 @@
-# PhyloBits.jl
-Phylogenetic tree tables - prt(tr) - and utilities. Plus: PhyloNetworks tree object/reader/writer, with minimal dependencies.
+# PhyloBits
+ Phylogenetic tree tables, PhyloNetworks tree reader without dependencies
