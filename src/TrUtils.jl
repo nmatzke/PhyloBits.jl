@@ -46,7 +46,7 @@ function re()
 	@eval using BioGeoJulia.MaxentInterp
 	@eval using BioGeoJulia.BGExample
 	#@eval using BioGeoJulia.TrUtils
-	@eval using BioGeoJulia.TreeTable
+	#@eval using BioGeoJulia.TreeTable
 	@eval using BioGeoJulia.StateSpace
 	@eval using BioGeoJulia.Parsers
 	@eval using BioGeoJulia.SSEs

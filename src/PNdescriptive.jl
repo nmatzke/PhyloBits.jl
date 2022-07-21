@@ -3,6 +3,8 @@ __precompile__(true)
 
 print("PhyloBits: loading PNdescriptive dependencies...")
 using PhyloBits.PNtypes	# for HybridNetwork
+using PhyloBits.PNreadwrite				# for writeSubTree! etc.
+
 print("...done.\n")
 
 
