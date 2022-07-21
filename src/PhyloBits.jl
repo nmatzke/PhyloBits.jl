@@ -49,6 +49,14 @@ include("TrUtils.jl")					# basic utility functions, R-like functions
 include("TreeTable.jl")				# for prt() tree tables (tree dataframes, trdfs), bd_liks(), etc.
 
 
+using PhyloBits.PNtypes						# Types: Tree, Node, Edge etc.
+using PhyloBits.PNmanipulateNet
+using PhyloBits.PNreadwrite				# Helper functions
+using PhyloBits.PNreadwrite 			# Reading and writing trees; readTopology
+using PhyloBits.PNdescriptive			# show() commands for trees etc.
+using PhyloBits.TrUtils						# basic utility functions, R-like functions
+using PhyloBits.TreeTable					# for prt() tree tables (tree dataframes, trdfs), bd_liks(), etc.
+
 
 
 

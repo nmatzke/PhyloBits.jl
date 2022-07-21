@@ -24,7 +24,7 @@ export hello_world_TrUtils, nthreads_procs, getwd, Rgetwd, setwd, getfn, recursi
 
 # Basic checks during Julia startup
 function hello_world_TrUtils()
-	display("TrUtils.hello_world_TrUtils() says hello on 2022-06-13_abc")
+	display("PhyloBits.TrUtils.hello_world_TrUtils() says hello on 2022-06-13_abc")
 end
 
 
