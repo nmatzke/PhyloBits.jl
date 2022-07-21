@@ -2,7 +2,8 @@ module PNreadwrite
 __precompile__(true)
 
 print("PhyloBits: loading PNreadwrite dependencies...")
-using PhyloBits.PNtypes	# for HybridNetwork
+using PhyloBits.PNtypes				# for HybridNetwork
+using PhyloBits.PNauxiliary		# for pushNode! etc.
 print("...done.\n")
 
 
