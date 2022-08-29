@@ -114,6 +114,21 @@ function getfn(fn)
 end
 
 
+
+"""
+# Read a tab-delimited text file
+fn = "/GitHub/PhyBEARS.jl/notes/area_of_areas_NZ_Oz_v1.txt"
+using DataFrames
+using CSV
+df = readtable(fn)
+"""
+function readtable(fn; delim="\t", header=1)
+	df = CSV.read(fn, DataFrame; delim=delim, header=header)
+	return df
+end
+
+
+
 # Find all code *.jl files in a package
 
 """
