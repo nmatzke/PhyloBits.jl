@@ -8,6 +8,8 @@ export hello_PhyloBits, add_one_PhyloBits
 
 print("\nPhyloBits: loading PhyloBits.jl.\n")
 
+
+using CSV						# for CSV.read(file, DataFrame; delim="\t")
 using Distributed 	# for workers, spawnat :any, etc.
 using Hwloc					# for Hwloc.num_physical_cores(), Hwloc.num_virtual_cores()
 using SpecialFunctions
@@ -71,8 +73,14 @@ add https://github.com/BioJulia/BioJuliaRegistry.git
 Pkg.instantiate()
 using PhyloBits
 
-using PhyloBits.TrUtils			# basic utility functions 
-using PhyloBits.TreeTable			# for prt() tree tables (DFs), bd_liks(), etc.
+using PhyloBits.PNtypes						# Types: Tree, Node, Edge etc.
+using PhyloBits.PNmanipulateNet
+using PhyloBits.PNreadwrite				# Helper functions
+using PhyloBits.PNreadwrite 			# Reading and writing trees; readTopology
+using PhyloBits.PNdescriptive			# show() commands for trees etc.
+using PhyloBits.TrUtils						# basic utility functions, R-like functions
+using PhyloBits.TreeTable					# for prt() tree tables (tree dataframes, trdfs), bd_liks(), etc.
+
 """
 
 
