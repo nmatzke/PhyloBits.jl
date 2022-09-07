@@ -18,7 +18,7 @@ using Hwloc					# for Hwloc.num_physical_cores(), Hwloc.num_virtual_cores()
 
 print("...done.\n")
 
-export hello_world_TrUtils, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, slashslash, addslash, df_to_Rdata, Reval, Rdput, Rnames, Rtypes, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, single_element_array_to_scalar, headf, moref, scr2str, lagrange_to_tip, area_of_areas_df_to_vectors, get_area_of_range
+export hello_world_TrUtils, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, slashslash, addslash, df_to_Rdata, Reval, Rdput, Rnames, Rtypes, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, single_element_array_to_scalar, headf, moref, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -691,88 +691,6 @@ function lagrange_to_tip(inputs, geog_df)
 		inputs.res.sumLikes_at_node_at_branchTop[nodeNum] = 1.0
 	end
 end # END function lagrange_to_tip(inputs, geog_df)
-
-
-
-"""
-# Area-of-areas table to a vector of vectors
-# area_of_areas_file = "/GitHub/PhyBEARS.jl/notes/area_of_areas_NZ_Oz_v1.txt"
-# area_of_areas_table = CSV.read(area_of_areas_file, DataFrame; delim="\t")
-# repr(Matrix(area_of_areas_table))
-tmpstr = "[0.0 1.0 28.6; 4.0 1.0 28.6; 20.0 0.0 28.6; 22.0 0.0 28.6; 30.0 1.0 28.6; 80.0 1.0 28.6; 600.0 1.0 28.6]"
-
-# area_of_areas_table = Reval(tmpstr)
-area_of_areas_matrix = eval(Meta.parse(tmpstr))
-area_of_areas_table = DataFrame(area_of_areas_matrix, ["times","A","B"])
-area_of_areas_vec = area_of_areas_df_to_vectors(area_of_areas_table)
-area_of_areas_vec = area_of_areas_df_to_vectors(area_of_areas_table; cols=2)
-
-#area_of_areas_vec = area_of_areas_df_to_vectors(area_of_areas_table; cols=2)
-area_of_areas_vec = area_of_areas_df_to_vectors(area_of_areas_table)
-area_of_areas_interpolator = interpolate((area_of_areas_table.times,), area_of_areas_vec, Gridded(Linear()))
-
-"""
-function area_of_areas_df_to_vectors(area_of_areas_table; cols=NaN)
-	numtimes = Rnrow(area_of_areas_table)
-
-	if isnan(cols)
-		numcols = Rncol(area_of_areas_table)
-		num_areas = numcols - 1
-		cols = 2:numcols
-	else
-		numcols = length(cols)
-		num_areas = numcols
-	end
-
-	area_of_areas_vec = [Vector{Float64}(undef, num_areas) for _ = 1:numtimes]
-	for i in 1:numtimes
-		area_of_areas_vec[i] .= flat2(area_of_areas_table[i, cols])
-	end
-	return(area_of_areas_vec)
-end
-
-
-
-"""
-# Get the area of a range at time t
-# actual_extinction_rate = base_rate * range_size^u
-
-# Load area_of_areas_table (DataFrame)
-tmpstr = "[0.0 1.0 28.6; 4.0 1.0 28.6; 20.0 0.0 28.6; 22.0 0.0 28.6; 30.0 1.0 28.6; 80.0 1.0 28.6; 600.0 1.0 28.6]"
-
-# area_of_areas_table = Reval(tmpstr)
-area_of_areas_matrix = eval(Meta.parse(tmpstr))
-area_of_areas_table = DataFrame(area_of_areas_matrix, ["times","A","B"])
-#area_of_areas_vec = area_of_areas_df_to_vectors(area_of_areas_table; cols=2)
-area_of_areas_vec = area_of_areas_df_to_vectors(area_of_areas_table)
-area_of_areas_interpolator = interpolate((area_of_areas_table.times,), area_of_areas_vec, Gridded(Linear()))
-
-# Calculate the area at different times
-tval = 19.0
-state_as_areas_list = [1,2]
-total_area = get_area_of_range(tval, state_as_areas_list, area_of_areas_interpolator)
-
-get_areas_of_range = x -> get_area_of_range(x, state_as_areas_list, area_of_areas_interpolator)
-tvals = seq(18.0, 23.0, 0.25)
-get_areas_of_range.(tvals)
-
-# Calculate extinction rate multipliers
-state_as_areas_list = [1]
-get_areas_of_range = x -> get_area_of_range(x, state_as_areas_list, area_of_areas_interpolator)
-tvals = seq(18.0, 23.0, 0.25)
-uval = -1.0
-get_extinction_rate_multipliers = x -> get_extinction_rate_multiplier(x, uval, state_as_areas_list, area_of_areas_interpolator)
-get_extinction_rate_multipliers.(tvals)
-"""
-function get_area_of_range(tval, state_as_areas_list, area_of_areas_interpolator)
-	num_areas = length(state_as_areas_list)
-	total_area = 0.0
-	for i in 1:num_areas
-		total_area += area_of_areas_interpolator(tval)[state_as_areas_list[i]]
-	end
-	return total_area
-end
-
 
 
 
