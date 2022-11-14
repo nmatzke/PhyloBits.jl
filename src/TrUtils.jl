@@ -18,7 +18,7 @@ using Hwloc					# for Hwloc.num_physical_cores(), Hwloc.num_virtual_cores()
 
 print("...done.\n")
 
-export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, slashslash, addslash, df_to_Rdata, Reval, Rdput, Rnames, Rtypes, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, single_element_array_to_scalar, headf, moref, scr2str, lagrange_to_tip
+export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, slashslash, addslash, df_to_Rdata, Reval, Rdput, Rnames, Rtypes, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, single_element_array_to_scalar, headf, moref, LETTERS, letters, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -671,6 +671,33 @@ function moref(fn)
 	 end
 	end
 end
+
+function LETTERS(i=1:26; output_char=false)
+	alphabet = 'A':'Z'
+	k = 1
+	tmp = join.(collect(Iterators.product(ntuple(_ -> alphabet, k)...))[:])
+	letters_vec = tmp[i]
+	
+	if output_char == true
+		letters_vec = collect(Iterators.flatten(vec.(collect.(area_names))))
+	end
+	
+	return(letters_vec)
+end
+
+function letters(i=1:26; output_char=false)
+	alphabet = 'a':'z'
+	k = 1
+	tmp = join.(collect(Iterators.product(ntuple(_ -> alphabet, k)...))[:])
+	letters_vec = tmp[i]
+
+	if output_char == true
+		letters_vec = collect(Iterators.flatten(vec.(collect.(area_names))))
+	end
+
+	return(letters_vec)
+end
+
 
 
 function scr2str(obj)
