@@ -18,7 +18,7 @@ using Hwloc					# for Hwloc.num_physical_cores(), Hwloc.num_virtual_cores()
 
 print("...done.\n")
 
-export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, slashslash, addslash, df_to_Rdata, Reval, Rdput, Rnames, Rtypes, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, single_element_array_to_scalar, headf, moref, LETTERS, letters, scr2str, lagrange_to_tip
+export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, addslash, df_to_Rdata, Reval, Rdput, Rnames, rnames, rn, Rtypes, rtypes, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, single_element_array_to_scalar, headf, moref, LETTERS, letters, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -419,7 +419,18 @@ function paste0(array_of_strings; delim="")
 	return(newtxt)
 end
 
+"""
 # type
+# Shortcut for julia's typeof()
+
+obj = construct_Res()
+Rnames(obj)
+Rtypes(obj)
+Rcbind(Rnames(obj), Rtypes(obj))
+ont(obj)
+
+type(obj)
+"""
 function type(obj)
 	typeof(obj)
 end
@@ -435,6 +446,27 @@ end
 function Rclass(obj)
 	string(typeof(obj))
 end
+
+"""
+# Returns the odd numbers
+x = 1:5
+odds(x)
+evens(x)
+"""
+function odds(x=1:5)
+	filter(x->isodd(x), x)
+end
+
+"""
+# Returns the even numbers
+x = 1:5
+odds(x)
+evens(x)
+"""
+function evens(x=1:5)
+	filter(x->iseven(x), x)
+end
+
 
 
 # Convert any multiple slashes to single slashes
@@ -527,7 +559,7 @@ function Rdput(item)
 end
 
 
-# fields / "names" of an object
+# fields / "names()" of an object
 # https://stackoverflow.com/questions/41687418/how-to-get-fields-of-a-julia-object
 """
 obj = construct_Res()
@@ -539,6 +571,37 @@ ont(obj)
 function Rnames(obj)
 	flat2(fieldnames(typeof(obj)))
 end
+
+# fields / "names" of an object
+# (shortcut for Rnames)
+# https://stackoverflow.com/questions/41687418/how-to-get-fields-of-a-julia-object
+"""
+obj = construct_Res()
+rnames(obj)
+rtypes(obj)
+Rcbind(Rnames(obj), rtypes(obj))
+ont(obj)
+"""
+function rnames(obj)
+	Rnames(obj)
+end
+
+
+# fields / "names" of an object
+# (shortcut for Rnames)
+# https://stackoverflow.com/questions/41687418/how-to-get-fields-of-a-julia-object
+"""
+obj = construct_Res()
+rn(obj)
+rtypes(obj)
+Rcbind(Rnames(obj), rtypes(obj))
+ont(obj)
+"""
+function rn(obj)
+	Rnames(obj)
+end
+
+
 
 
 """
@@ -556,6 +619,19 @@ function Rtypes(obj)
 	end
 	return types
 end
+
+"""
+obj = construct_Res()
+Rnames(obj)
+Rtypes(obj)
+Rcbind(Rnames(obj), rtypes(obj))
+ont(obj)
+"""
+function rtypes(obj)
+	types = Rtypes(obj)
+	return types
+end
+
 
 """
 # Rename the column names in a DataFrame
