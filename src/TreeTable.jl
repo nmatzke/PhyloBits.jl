@@ -1965,7 +1965,7 @@ ML_yule_birthRate(tr)
 function ML_yule_birthRate(tr)
 	num_sp_events = tr.numNodes-tr.numTaxa
 	total_branch_length = get_treelength(tr)
-	lambda = num_sp_events / total_branch_length
+	lambda = (num_sp_events-1.0) / total_branch_length # -1.0, following Yule birthdeath function
 	return lambda
 end
 
