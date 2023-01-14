@@ -18,7 +18,7 @@ using Hwloc					# for Hwloc.num_physical_cores(), Hwloc.num_virtual_cores()
 
 print("...done.\n")
 
-export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, addslash, df_to_Rdata, Reval, Rdput, Rnames, rnames, rn, Rtypes, rtypes, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, single_element_array_to_scalar, headf, moref, LETTERS, letters, scr2str, lagrange_to_tip
+export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, addslash, df_to_Rdata, Reval, Rdput, Rnames, rnames, rn, Rtypes, rtypes, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, LETTERS, letters, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -30,11 +30,11 @@ end
 
 
 """
-# Get the off-diagonal elements of a matrix. 
-# i.e., the opposite of diag()
+Get the off-diagonal elements of a matrix. 
+i.e., the opposite of diag()
 
-# Source of function:
-# https://discourse.julialang.org/t/off-diagonal-elements-of-matrix/41169/7
+Source of function:
+https://discourse.julialang.org/t/off-diagonal-elements-of-matrix/41169/7
 """
 function offdiag(A::AbstractMatrix)
     [A[ι] for ι in CartesianIndices(A) if ι[1] ≠ ι[2]]
@@ -45,7 +45,37 @@ end
 # Create a BitArray (a Matrix of Booleans) with
 # true on the diagonal
 """
-function make_diag_TF(n)
+function make_diag_TF(n::Int64)
+	diagTF = BitArray(undef, n, n)
+	for i in 1:n
+		diagTF[i,i] = true
+	end
+	return(diagTF)
+end
+
+"""
+# Create a BitArray (a Matrix of Booleans) with
+# true on the diagonal
+"""
+function make_diag_TF(Qmat::Matrix)
+	if (length(dim(Qmat)) != 2)
+		errtxt = "STOP ERROR in make_diag_TF(): the input must have 2 dimensions. Instead, dim() gives:"
+		print("\n\n")
+		print(errtxt)
+		print(dim(Qmat))
+		print("\n\n")
+		error(errtxt)
+	end
+	if (dim(Qmat)[1] != dim(Qmat)[2])
+		errtxt = "STOP ERROR in make_diag_TF(): the Matrix must be square. Instead, dim() gives:"
+		print("\n\n")
+		print(errtxt)
+		print(dim(Qmat))
+		print("\n\n")
+		error(errtxt)
+	end
+
+	n = dim(Qmat)[1]
 	diagTF = BitArray(undef, n, n)
 	for i in 1:n
 		diagTF[i,i] = true
@@ -57,7 +87,39 @@ end
 # Create a BitArray (a Matrix of Booleans) with
 # true on the off-diagonal
 """
-function make_offdiag_TF(n)
+function make_offdiag_TF(Qmat::Matrix)
+	if (length(dim(Qmat)) != 2)
+		errtxt = "STOP ERROR in make_offdiag_TF(): the input must have 2 dimensions. Instead, dim() gives:"
+		print("\n\n")
+		print(errtxt)
+		print(dim(Qmat))
+		print("\n\n")
+		error(errtxt)
+	end
+	if (dim(Qmat)[1] != dim(Qmat)[2])
+		errtxt = "STOP ERROR in make_offdiag_TF(): the Matrix must be square. Instead, dim() gives:"
+		print("\n\n")
+		print(errtxt)
+		print(dim(Qmat))
+		print("\n\n")
+		error(errtxt)
+	end
+
+	n = dim(Qmat)[1]
+	offdiagTF = BitArray(undef, n, n)
+	offdiagTF .= true
+	for i in 1:n
+		offdiagTF[i,i] = false
+	end
+	return(offdiagTF)
+end
+
+
+"""
+# Create a BitArray (a Matrix of Booleans) with
+# true on the off-diagonal
+"""
+function make_offdiag_TF(n::Int64)
 	offdiagTF = BitArray(undef, n, n)
 	offdiagTF .= true
 	for i in 1:n
@@ -729,6 +791,29 @@ function flat2(arr)
     grep(arr)
     rst
 end
+
+"""
+Version of R's rowSums
+Designed for 2-dimensional matrices. Technically, it will return 
+a vector of the 2nd dimension of the Matrix/Array
+
+Qmat = [0.0 0.0 0.0 0.0;
+e_val 0.0 0.0 d_val;
+e_val 0.0 0.0 d_val;
+0.0 e_val e_val 0.0]
+
+
+Qmat[make_diag_TF(Qmat)] .= flat2(sum(Qmat; dims=2))
+
+u0 = [0, 0.125, 0.75, 0.125]
+
+"""
+function rowSums(Qmat)
+	return flat2(sum(Qmat; dims=2))
+end
+
+
+
 
 
 # Convert a single-element array to scalar
