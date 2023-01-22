@@ -18,7 +18,7 @@ using Hwloc					# for Hwloc.num_physical_cores(), Hwloc.num_virtual_cores()
 
 print("...done.\n")
 
-export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, addslash, df_to_Rdata, Reval, Rdput, Rnames, rnames, rn, Rtypes, rtypes, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, LETTERS, letters, scr2str, lagrange_to_tip
+export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, addslash, df_to_Rdata, Reval, Rdput, Rnames, rnames, rn, Rtypes, rtypes, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -857,8 +857,64 @@ function moref(fn)
 	end
 end
 
+
+
+
+"""
+# Gives a tuple containing the letters, then Greek symbols available in Julia
+# (taken from: https://en.wikipedia.org/wiki/Greek_alphabet )
+#
+# Example:
+
+alphabets = get_alphabets()
+rn(alphabets)
+hcat(alphabets.greek_letters_in_english, alphabets.greek_alphabet, alphabets.greek_alphabet2, alphabets.GREEK_ALPHABET)
+"""
+
+function get_alphabets(return_val="all")
+	# https://en.wikipedia.org/wiki/Greek_alphabet
+
+	alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+
+	ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+	
+
+	greek_alphabet = ["α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω"]
+	greek_alphabet2 = ["α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "ς", "τ", "υ", "φ", "χ", "ψ", "ω"]
+	GREEK_ALPHABET = ["Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω"]
+
+	additional_greek = ["ς", "Γ", "Δ", "Θ", "Λ", "Ξ", "Π", "Σ", "Φ", "Ψ", "Ω"]
+
+	greek_letters_in_english = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega"]
+
+	corresponding_english_letters = ["a", "b", "g", "d", "e",  "z", "h", "th", "i", "k", "l", "m", "n", "ks", "o", "p",  "r", "s", "t", "u", "v", "x", "y", "o"]
+
+	alphabets = (alphabet=alphabet, ALPHABET=ALPHABET, greek_alphabet=greek_alphabet, greek_alphabet2=greek_alphabet2, GREEK_ALPHABET=GREEK_ALPHABET, additional_greek=additional_greek, greek_letters_in_english=greek_letters_in_english, corresponding_english_letters=corresponding_english_letters)
+
+	
+	if (return_val == "all")
+		return alphabets
+	end
+
+	if (return_val == "greek_df")
+		greek_df = DataFrame(greek_alphabet=greek_alphabet, greek_alphabet2=greek_alphabet2, GREEK_ALPHABET=GREEK_ALPHABET, additional_greek=additional_greek, greek_letters_in_english=greek_letters_in_english, corresponding_english_letters=corresponding_english_letters)
+		return greek_df
+	end
+	return alphabets
+end
+
+"""
+# After the 26 standard letters, the function uses the opposite case, then Greek symbols available in Julia
+# (taken from: https://en.wikipedia.org/wiki/Greek_alphabet )
+"""
 function LETTERS(i=1:26; output_char=false)
-	alphabet = 'A':'Z'
+	alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+
+	ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+
+	greek_alphabet = ["α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω"]
+	additional_unique_greek = ["ς", "Γ", "Δ", "Θ", "Λ", "Ξ", "Π", "Σ", "Φ", "Ψ", "Ω"]
+	alphabet = vcat(ALPHABET, alphabet, greek_alphabet, additional_unique_greek)
 	k = 1
 	tmp = join.(collect(Iterators.product(ntuple(_ -> alphabet, k)...))[:])
 	letters_vec = tmp[i]
@@ -871,7 +927,12 @@ function LETTERS(i=1:26; output_char=false)
 end
 
 function letters(i=1:26; output_char=false)
-	alphabet = 'a':'z'
+	alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+
+	ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+	greek_alphabet = ["α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω"]
+	additional_unique_greek = ["ς", "Γ", "Δ", "Θ", "Λ", "Ξ", "Π", "Σ", "Φ", "Ψ", "Ω"]
+	alphabet = vcat(alphabet, ALPHABET, greek_alphabet, additional_unique_greek)
 	k = 1
 	tmp = join.(collect(Iterators.product(ntuple(_ -> alphabet, k)...))[:])
 	letters_vec = tmp[i]
@@ -882,6 +943,59 @@ function letters(i=1:26; output_char=false)
 
 	return(letters_vec)
 end
+
+
+
+function GREEKLETTERS(i=1:26; output_char=false)
+	GREEK_ALPHABET = ["Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω"]
+	alphabet = GREEK_ALPHABET
+	k = 1
+	tmp = join.(collect(Iterators.product(ntuple(_ -> alphabet, k)...))[:])
+	letters_vec = tmp[i]
+	
+	if output_char == true
+		letters_vec = collect(Iterators.flatten(vec.(collect.(area_names))))
+	end
+	
+	return(letters_vec)
+end
+
+function greekletters(i=1:26; output_char=false)
+	greek_alphabet = ["α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω"]
+	alphabet = greek_alphabet
+	k = 1
+	tmp = join.(collect(Iterators.product(ntuple(_ -> alphabet, k)...))[:])
+	letters_vec = tmp[i]
+
+	if output_char == true
+		letters_vec = collect(Iterators.flatten(vec.(collect.(area_names))))
+	end
+
+	return(letters_vec)
+end
+
+
+function greekletters2(i=1:26; output_char=false)
+	greek_alphabet2 = ["α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "ς", "τ", "υ", "φ", "χ", "ψ", "ω"]
+	alphabet = greek_alphabet2
+	k = 1
+	tmp = join.(collect(Iterators.product(ntuple(_ -> alphabet, k)...))[:])
+	letters_vec = tmp[i]
+
+	if output_char == true
+		letters_vec = collect(Iterators.flatten(vec.(collect.(area_names))))
+	end
+
+	return(letters_vec)
+end
+
+
+
+
+
+
+
+
 
 
 
