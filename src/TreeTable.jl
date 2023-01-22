@@ -43,7 +43,7 @@ using SpecialFunctions			# for e.g. logfactorial()
 
 print("...done.\n")
 
-export get_nodenumbers_above_node, get_postorder_nodenumbers_above_node, initialize_edgematrix, get_pruningwise_postorder_edgematrix, get_LR_uppass_edgematrix, get_LR_downpass_edgematrix, get_LR_uppass_nodeIndexes, get_LR_downpass_nodeIndexes, get_Rnodenums, get_nodeIndex_PNnumber, get_nodeIndex_from_PNnumber, get_nonrootnodes, get_nonrootnodes_trdf, nodetimes, prt, get_taxa_descending_from_each_node, isTip_TF, get_NodeIndexes_from_edge, get_NodeIndex_df_by_tree_edges, get_node_heights, get_node_ages, get_root_age, branching_times, bd_liks, bd_liks_trdf, get_treelength, ML_yule_birthRate
+export get_nodenumbers_above_node, get_postorder_nodenumbers_above_node, initialize_edgematrix, get_pruningwise_postorder_edgematrix, get_LR_uppass_edgematrix, get_LR_downpass_edgematrix, get_LR_uppass_nodeIndexes, get_LR_downpass_nodeIndexes, get_Rnodenums, get_nodeIndex_PNnumber, get_nodeIndex_from_PNnumber, get_nonrootnodes, get_nonrootnodes_trdf, nodetimes, prt, get_taxa_descending_from_each_node, isTip_TF, get_NodeIndexes_from_edge, get_NodeIndex_df_by_tree_edges, get_node_heights, get_node_ages, get_root_age, get_tree_height, branching_times, bd_liks, bd_liks_trdf, get_treelength, ML_yule_birthRate
 
 
 
@@ -1662,6 +1662,33 @@ get_root_age(tr)
 function get_root_age(tr)
 	cumulative_height_at_each_node = get_node_heights(tr)
 	root_age = maximum(cumulative_height_at_each_node)
+	return root_age
+end
+
+
+"""
+# Returns the age of the root, i.e. the height of the highest tip
+# above the root.
+
+# Ultrametric tree
+great_ape_newick_string = "((human:1.0,(chimp:0.5):0.5):1.0,gorilla:2.0);"
+tr = readTopology(great_ape_newick_string)
+tr
+
+get_root_age(tr)
+
+
+# Non-ultrametric tree
+great_ape_newick_string = "((human:0.75,(chimp:0.5):0.5):1.0,gorilla:2.0);"
+tr = readTopology(great_ape_newick_string)
+tr
+
+get_root_age(tr)
+
+"""
+function get_tree_height(tr)
+	root_age = get_root_age(tr)
+	return root_age
 end
 
 
