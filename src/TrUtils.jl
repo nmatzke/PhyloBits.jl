@@ -18,7 +18,7 @@ using Hwloc					# for Hwloc.num_physical_cores(), Hwloc.num_virtual_cores()
 
 print("...done.\n")
 
-export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, addslash, df_to_Rdata, Reval, Rdput, Rnames, rnames, rn, Rtypes, rtypes, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
+export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -644,6 +644,25 @@ function Rdput(item)
 	tmpstr = repr(item)
 end
 
+"""
+Output a DataFrame to a text representation (to screen) that can be 
+read back in.
+Source: https://stackoverflow.com/questions/61723347/how-to-provide-reproducible-sample-data-in-julia
+
+# Example:
+df = DataFrame(AbstractVector[["y", "j", "j", "y"], [1, 1, 2, 2], [1, 1, 2, 2], [1, 2, 1, 2], [1, 2, 2, 1], [0.9166666666666666, 0.5, 0.5, 0.9166666666666666], [0.6470588235294118, 0.35294117647058826, 0.35294117647058826, 0.6470588235294118], [0.14379084952941176, 0.07843137247058823, 0.07843137247058823, 0.14379084952941176], [0.14379084952941176, 0.07843137247058823, 0.07843137247058823, 0.14379084952941176], [0.0, 0.0, 0.0, 0.0]], DataFrames.Index(Dict(:event => 1, :wt => 6, :val => 9, :j => 3, :k => 4, :rates_t => 10, :prob => 7, :i => 2, :rate => 8, :pair => 5), [:event, :i, :j, :k, :pair, :wt, :prob, :rate, :val, :rates_t]); copycols=true)
+
+# Output to screen:
+julian_dput(df)
+
+# DataFrame(AbstractVector[["y", "j", "j", "y"], [1, 1, 2, 2], [1, 1, 2, 2], [1, 2, 1, 2], [1, 2, 2, 1], [0.9166666666666666, 0.5, 0.5, 0.9166666666666666], [0.6470588235294118, 0.35294117647058826, 0.35294117647058826, 0.6470588235294118], [0.14379084952941176, 0.07843137247058823, 0.07843137247058823, 0.14379084952941176], [0.14379084952941176, 0.07843137247058823, 0.07843137247058823, 0.14379084952941176], [0.0, 0.0, 0.0, 0.0]], DataFrames.Index(Dict(:event => 1, :wt => 6, :val => 9, :j => 3, :k => 4, :rates_t => 10, :prob => 7, :i => 2, :rate => 8, :pair => 5), [:event, :i, :j, :k, :pair, :wt, :prob, :rate, :val, :rates_t]), nothing, nothing, true)
+
+# Cut ", nothing, nothing, true", and it works!
+df2 = DataFrame(AbstractVector[["y", "j", "j", "y"], [1, 1, 2, 2], [1, 1, 2, 2], [1, 2, 1, 2], [1, 2, 2, 1], [0.9166666666666666, 0.5, 0.5, 0.9166666666666666], [0.6470588235294118, 0.35294117647058826, 0.35294117647058826, 0.6470588235294118], [0.14379084952941176, 0.07843137247058823, 0.07843137247058823, 0.14379084952941176], [0.14379084952941176, 0.07843137247058823, 0.07843137247058823, 0.14379084952941176], [0.0, 0.0, 0.0, 0.0]], DataFrames.Index(Dict(:event => 1, :wt => 6, :val => 9, :j => 3, :k => 4, :rates_t => 10, :prob => 7, :i => 2, :rate => 8, :pair => 5), [:event, :i, :j, :k, :pair, :wt, :prob, :rate, :val, :rates_t]))
+"""
+function julian_dput(df)
+	invoke(show, Tuple{typeof(stdout), Any}, stdout, df);
+end
 
 # fields / "names()" of an object
 # https://stackoverflow.com/questions/41687418/how-to-get-fields-of-a-julia-object
