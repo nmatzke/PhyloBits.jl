@@ -18,7 +18,7 @@ using Hwloc					# for Hwloc.num_physical_cores(), Hwloc.num_virtual_cores()
 
 print("...done.\n")
 
-export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
+export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byRow, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -736,6 +736,40 @@ function rtypes(obj)
 	types = Rtypes(obj)
 	return types
 end
+
+
+
+"""
+Compare 2 DataFrames, elementwise, for numerical differences
+
+
+df1 = bgb_ancstates_AT_nodes_df
+df2 = vfft(res.anc_estimates_at_each_nodeIndex_branchTop[R_order])
+"""
+function compare_dfs(df1, df2, tol=1e-4)
+	difs = eachcol(df1) .- eachcol(df2)
+	TFs = zeros(dim(df1))
+	for i in 1:length(difs)
+		abs_diffs = abs.(difs[i])
+		TFs[:,i] .= abs_diffs .< tol
+	end
+	TFs
+	
+	return(TFs)
+end
+
+function get_max_df_diffs_byRow(df1, df2, tol=1e-4)
+	max_diffs = repeat([0.0], Rnrow(df1))
+	difs = eachcol(df1) .- eachcol(df2)
+	for i in 1:length(difs)
+		abs_diffs = abs.(difs[i])
+		max_diffs[i] = maximum(abs_diffs)
+	end
+	return(max_diffs)
+end
+
+
+
 
 """
 # Convert a vector of vectors (e.g. ancestral states) to DataFrame
