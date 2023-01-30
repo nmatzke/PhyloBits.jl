@@ -753,7 +753,6 @@ function compare_dfs(df1, df2, tol=1e-4)
 	for col in 1:length(difs)
 		abs_diffs = abs.(difs[col])
 		abs_diffs[isnan.(abs_diffs)] .= 0.0
-		isnan.(abs_diffs) .= 0.0
 		TFs[:,col] .= abs_diffs .< tol
 	end
 	TFs
