@@ -747,7 +747,7 @@ df1 = bgb_ancstates_AT_nodes_df
 df2 = vfft(res.anc_estimates_at_each_nodeIndex_branchTop[R_order])
 tol = 1e-4
 """
-function compare_dfs(df1, df2, tol=1e-4)
+function compare_dfs(df1, df2; tol=1e-4)
 	difs = eachcol(df1) .- eachcol(df2)
 	TFs = zeros(dim(df1))
 	for col in 1:length(difs)
@@ -760,7 +760,7 @@ function compare_dfs(df1, df2, tol=1e-4)
 	return(TFs)
 end
 
-function get_max_df_diffs_byCol(df1, df2, tol=1e-4)
+function get_max_df_diffs_byCol(df1, df2; tol=1e-4)
 	max_diffs = repeat([0.0], Rncol(df1))
 	difs = eachcol(df1) .- eachcol(df2)
 	for col in 1:length(difs)
