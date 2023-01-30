@@ -760,7 +760,7 @@ function compare_dfs(df1, df2; tol=1e-4)
 	return(TFs)
 end
 
-function get_max_df_diffs_byCol(df1, df2; tol=1e-4)
+function get_max_df_diffs_byCol(df1, df2)
 	max_diffs = repeat([0.0], Rncol(df1))
 	difs = eachcol(df1) .- eachcol(df2)
 	for col in 1:length(difs)
