@@ -745,25 +745,29 @@ Compare 2 DataFrames, elementwise, for numerical differences
 
 df1 = bgb_ancstates_AT_nodes_df
 df2 = vfft(res.anc_estimates_at_each_nodeIndex_branchTop[R_order])
+tol = 1e-4
 """
 function compare_dfs(df1, df2, tol=1e-4)
 	difs = eachcol(df1) .- eachcol(df2)
 	TFs = zeros(dim(df1))
-	for i in 1:length(difs)
-		abs_diffs = abs.(difs[i])
-		TFs[:,i] .= abs_diffs .< tol
+	for col in 1:length(difs)
+		abs_diffs = abs.(difs[col])
+		abs_diffs[isnan.(abs_diffs)] .= 0.0
+		isnan.(abs_diffs) .= 0.0
+		TFs[:,col] .= abs_diffs .< tol
 	end
 	TFs
 	
 	return(TFs)
 end
 
-function get_max_df_diffs_byRow(df1, df2, tol=1e-4)
-	max_diffs = repeat([0.0], Rnrow(df1))
+function get_max_df_diffs_byCol(df1, df2, tol=1e-4)
+	max_diffs = repeat([0.0], Rncol(df1))
 	difs = eachcol(df1) .- eachcol(df2)
-	for i in 1:length(difs)
-		abs_diffs = abs.(difs[i])
-		max_diffs[i] = maximum(abs_diffs)
+	for col in 1:length(difs)
+		abs_diffs = abs.(difs[col])
+		abs_diffs[isnan.(abs_diffs)] .= 0.0
+		max_diffs[col] = maximum(abs_diffs)
 	end
 	return(max_diffs)
 end
