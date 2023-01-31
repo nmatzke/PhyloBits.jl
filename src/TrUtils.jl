@@ -215,7 +215,7 @@ end # END function nthreads_procs()
 package_string = "PhyBEARS"
 """
 function get_installed_path(package_string)
-	tmpdir = pathof(eval(Meta.parse(package_string)))
+	tmpdir = pathof(eval(Meta.parse(paste0(["global x = ", package_string]))))
 	package_file_string = paste0(["/src/", package_string, ".jl"])
 	package_dir = replace(tmpdir, package_file_string => "")
 	return package_dir
