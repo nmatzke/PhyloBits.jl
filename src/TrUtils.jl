@@ -212,11 +212,12 @@ function nthreads_procs()
 end # END function nthreads_procs()
 
 """
+pathof_result = pathof(PhyBEARS) # has to be run in the global scope
 package_string = "PhyBEARS"
 """
-function get_installed_path(package_string)
-	eval(Meta.parse(paste0(["global x = ", package_string])))
-	tmpdir = pathof(x)
+function get_installed_path(pathof_result, package_string)
+	# eval(Meta.parse(paste0(["global x = ", package_string]))) # doesn't work, not global
+	tmpdir = pathof_result
 	package_file_string = paste0(["/src/", package_string, ".jl"])
 	package_dir = replace(tmpdir, package_file_string => "")
 	return package_dir
@@ -224,9 +225,11 @@ end
 
 """
 # pp = Package Path = shortcut for get_installed_path
+pathof_result = pathof(PhyBEARS) # has to be run in the global scope
+package_string = "PhyBEARS"
 """
-function pp(package_string)
-	return get_installed_path(package_string)
+function pp(pathof_result, package_string)
+	return get_installed_path(pathof_result, package_string)
 end
 
 """
