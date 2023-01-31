@@ -18,7 +18,7 @@ using Hwloc					# for Hwloc.num_physical_cores(), Hwloc.num_virtual_cores()
 
 print("...done.\n")
 
-export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
+export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, get_installed_path, pp, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -211,7 +211,73 @@ function nthreads_procs()
 	print("\n")
 end # END function nthreads_procs()
 
+"""
+package_string = "PhyBEARS"
+"""
+function get_installed_path(package_string)
+	tmpdir = pathof(eval(Meta.parse(package_string)))
+	package_file_string = paste0(["/src/", package_string, ".jl"])
+	package_dir = replace(tmpdir, package_file_string => "")
+	return package_dir
+end
 
+"""
+# pp = Package Path = shortcut for get_installed_path
+"""
+function pp(package_string)
+	return get_installed_path(package_string)
+end
+
+"""
+Merge two paths, ensuring the correct number of slashes
+path1 = "/Users/nickm/.julia/packages/PhyBEARS/LHeD3/src"
+path2 = "data"
+list_of_two_strings = [path1, path2]
+merge_paths(list_of_two_strings)
+"""
+function merge_paths(list_of_two_strings)
+	path = slashslash(paste0([addslash(list_of_two_strings[1]), addslash(list_of_two_strings[2])]))
+	return path
+end
+
+"""
+mp: shortcut for merge_paths
+
+Merge two paths, ensuring the correct number of slashes
+path1 = "/Users/nickm/.julia/packages/PhyBEARS/LHeD3/src"
+path2 = "data"
+list_of_two_strings = [path1, path2]
+merge_paths(list_of_two_strings)
+"""
+function mp(list_of_two_strings)
+	return merge_paths(list_of_two_strings)
+end
+
+"""
+Merge path and filename, ensuring the correct number of slashes
+path1 = "/Users/nickm/.julia/packages/PhyBEARS/LHeD3/src/data"
+path2 = "geog.data"
+list_of_two_strings = [path1, path2]
+merge_paths(list_of_two_strings)
+"""
+function merge_path_with_file(list_of_two_strings)
+	path = slashslash(paste0([addslash(list_of_two_strings[1]), list_of_two_strings[2]]))
+	return path
+end
+
+"""
+mpf: shortcut for merge_path_with_file
+
+Merge path and filename, ensuring the correct number of slashes
+path1 = "/Users/nickm/.julia/packages/PhyBEARS/LHeD3/src/data"
+path2 = "geog.data"
+list_of_two_strings = [path1, path2]
+merge_paths(list_of_two_strings)
+"""
+function mpf(list_of_two_strings)
+	path = slashslash(paste0([addslash(list_of_two_strings[1]), list_of_two_strings[2]]))
+	return path
+end
 
 
 # getwd
@@ -555,7 +621,9 @@ end
 
 
 
+"""
 # Convert any multiple slashes to single slashes
+"""
 function slashslash(txt)
 	txt = replace(txt, "//" => "/")
 	txt = replace(txt, "//" => "/")
@@ -568,6 +636,15 @@ function slashslash(txt)
 	txt = replace(txt, "//" => "/")
 	return(txt)
 end
+
+"""
+ss: shortcut for slashslash
+# Convert any multiple slashes to single slashes
+"""
+function ss(txt)
+	return slashslash(txt)
+end
+
 
 # Add a slash to the end of a string, if it is not there
 # (Unless the txt string is "", then return "")
