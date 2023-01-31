@@ -38,12 +38,12 @@ print("PhyloBits: loading TreeTable.jl dependencies...")
 using PhyloBits.PNtypes # for e.g. HybridNetwork
 using PhyloBits.TrUtils # for e.g. flat2
 using DataFrames			# for e.g. DataFrame()
-#using PhyloNetworks		# for e.g. readTopology()
+#using PhyloBits		# for e.g. readTopology()
 using SpecialFunctions			# for e.g. logfactorial()
 
 print("...done.\n")
 
-export get_nodenumbers_above_node, get_postorder_nodenumbers_above_node, initialize_edgematrix, get_pruningwise_postorder_edgematrix, get_LR_uppass_edgematrix, get_LR_downpass_edgematrix, get_LR_uppass_nodeIndexes, get_LR_downpass_nodeIndexes, get_Rnodenums, get_nodeIndex_PNnumber, get_nodeIndex_from_PNnumber, get_nonrootnodes, get_nonrootnodes_trdf, nodetimes, prt, get_taxa_descending_from_each_node, isTip_TF, get_NodeIndexes_from_edge, get_NodeIndex_df_by_tree_edges, get_node_heights, get_node_ages, get_root_age, get_tree_height, branching_times, bd_liks, bd_liks_trdf, get_treelength, ML_yule_birthRate
+export get_nodenumbers_above_node, get_postorder_nodenumbers_above_node, initialize_edgematrix, get_pruningwise_postorder_edgematrix, get_LR_uppass_edgematrix, get_LR_downpass_edgematrix, get_LR_uppass_nodeIndexes, get_LR_downpass_nodeIndexes, get_Rnodenums, get_nodeIndex_PNnumber, get_nodeIndex_from_PNnumber, get_nonrootnodes, get_nonrootnodes_trdf, nodetimes, prt, get_taxa_descending_from_each_node, isTip_TF, get_NodeIndexes_from_edge, get_NodeIndex_df_by_tree_edges, get_node_heights, get_node_ages, get_root_age, get_tree_height, branching_times, bd_liks, bd_liks_trdf, get_treelength, ML_yule_birthRate, ML_yule_birthRate_wRoot
 
 
 
@@ -55,7 +55,7 @@ export get_nodenumbers_above_node, get_postorder_nodenumbers_above_node, initial
 
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 
 # For Nick's editing (ignore)
 include("/GitHub/BioGeoJulia.jl/notes/TreeTableO.jl")
@@ -181,7 +181,7 @@ end # END get_nodenumbers_above_node
 
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 
 # For Nick's editing (ignore)
 include("/GitHub/BioGeoJulia.jl/notes/TreeTableO.jl")
@@ -329,7 +329,7 @@ end
 
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 #using PhyloPlots
 
 
@@ -458,7 +458,7 @@ end
 
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 #using PhyloPlots
 
 
@@ -493,7 +493,7 @@ end
 
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 #using PhyloPlots
 
 
@@ -533,7 +533,7 @@ end
 # Preorder traversal (I think)
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 #using PhyloPlots
 
 
@@ -562,7 +562,7 @@ end
 # Reverse-Preorder traversal (I think)
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 #using PhyloPlots
 
 
@@ -595,7 +595,7 @@ end
 
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 #using PhyloPlots
 
 
@@ -677,7 +677,7 @@ end
 
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 #using PhyloPlots
 
 great_ape_newick_string = "(((human:6,chimpanzee:6):1,gorilla:7):5,orangutan:12);"
@@ -706,7 +706,7 @@ end
 # (i.e., the index of that node in the list of nodes)
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 
 
 great_ape_newick_string = "(((human:6,chimpanzee:6):1,gorilla:7):5,orangutan:12);"
@@ -729,7 +729,7 @@ get_nodeIndex_from_PNnumber(PNnumber; indexNum_table)
 
 
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 
 #######################################################
 # Typical bifurcating (binary) tree
@@ -848,7 +848,7 @@ end # END function get_nonrootnodes_trdf(trdf)
 """
 # Get the unique node times, in ascending order from 0.0 (the tips).
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 
 great_ape_newick_string = "(((human:6,chimpanzee:6):1,gorilla:7):5,orangutan:12);"
 tr = readTopology(great_ape_newick_string)
@@ -876,7 +876,7 @@ end
 
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 
 
 great_ape_newick_string = "(((human:6,chimpanzee:6):1,gorilla:7):5,orangutan:12);"
@@ -896,7 +896,7 @@ trdf
 
 
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 
 #######################################################
 # Typical bifurcating (binary) tree
@@ -1058,7 +1058,7 @@ end # END function prt(tr, rootnodenum=tr.root, get_taxa_by_node=true)
 # The list is comma-delimited and alphabetical
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 #using PhyloPlots
 
 include("/GitHub/BioGeoJulia.jl/notes/TreeTableO.jl")
@@ -1317,7 +1317,7 @@ end
 
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 #using PhyloPlots
 
 
@@ -1412,7 +1412,7 @@ end
 
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 #using PhyloPlots
 
 
@@ -1514,7 +1514,7 @@ end
 
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 #using PhyloPlots
 
 
@@ -1567,7 +1567,7 @@ end # END function get_node_heights(tr)
 
 """
 using DataFrames
-using PhyloNetworks
+using PhyloBits
 #using PhyloPlots
 
 #######################################################
@@ -1971,7 +1971,7 @@ end # END function bd_liks(tr, birthRate=1.0, deathRate=0.0)
 
 
 """
-using PhyloNetworks
+using PhyloBits
 tr = readTopology("((((((((P_hawaiiensis_WaikamoiL1:0.9665748366,P_mauiensis_Eke:0.9665748366):0.7086257935,(P_fauriei2:1.231108298,P_hathewayi_1:1.231108298):0.4440923324):0.1767115552,(P_kaduana_PuuKukuiAS:1.851022399,P_mauiensis_PepeAS:1.851022399):0.0008897862802):0.3347375986,P_kaduana_HawaiiLoa:2.186649784):0.302349378,(P_greenwelliae07:1.132253042,P_greenwelliae907:1.132253042):1.35674612):1.689170274,((((P_mariniana_MauiNui:1.99490084,P_hawaiiensis_Makaopuhi:1.99490084):0.7328279804,P_mariniana_Oahu:2.72772882):0.2574151709,P_mariniana_Kokee2:2.985143991):0.4601084855,P_wawraeDL7428:3.445252477):0.732916959):0.7345185743,(P_grandiflora_Kal2:2.480190277,P_hobdyi_Kuia:2.480190277):2.432497733):0.2873119899,((P_hexandra_K1:2.364873976,P_hexandra_M:2.364873976):0.4630447802,P_hexandra_Oahu:2.827918756):2.372081244);")
 total_branch_length = get_treelength(tr)
 """
@@ -1984,10 +1984,17 @@ function get_treelength(tr)
 end
 
 """
-using PhyloNetworks
+using PhyloBits
 tr = readTopology("((((((((P_hawaiiensis_WaikamoiL1:0.9665748366,P_mauiensis_Eke:0.9665748366):0.7086257935,(P_fauriei2:1.231108298,P_hathewayi_1:1.231108298):0.4440923324):0.1767115552,(P_kaduana_PuuKukuiAS:1.851022399,P_mauiensis_PepeAS:1.851022399):0.0008897862802):0.3347375986,P_kaduana_HawaiiLoa:2.186649784):0.302349378,(P_greenwelliae07:1.132253042,P_greenwelliae907:1.132253042):1.35674612):1.689170274,((((P_mariniana_MauiNui:1.99490084,P_hawaiiensis_Makaopuhi:1.99490084):0.7328279804,P_mariniana_Oahu:2.72772882):0.2574151709,P_mariniana_Kokee2:2.985143991):0.4601084855,P_wawraeDL7428:3.445252477):0.732916959):0.7345185743,(P_grandiflora_Kal2:2.480190277,P_hobdyi_Kuia:2.480190277):2.432497733):0.2873119899,((P_hexandra_K1:2.364873976,P_hexandra_M:2.364873976):0.4630447802,P_hexandra_Oahu:2.827918756):2.372081244);")
 total_branch_length = get_treelength(tr)
 ML_yule_birthRate(tr)
+ML_yule_birthRate_wRoot(tr)
+
+# A simple great ape tree, shortest branch lengths of 1.0
+tr = readTopology("(((chimp:1,human:1):1,gorilla:2):1,orang:3);")
+total_branch_length = get_treelength(tr)
+ML_yule_birthRate(tr)
+ML_yule_birthRate_wRoot(tr)
 """
 function ML_yule_birthRate(tr)
 	num_sp_events = tr.numNodes-tr.numTaxa
@@ -1997,6 +2004,72 @@ function ML_yule_birthRate(tr)
 end
 
 
+"""
+using PhyloBits
+
+#################################################################
+# Psychotria example tree, from Ree & Smith (2008)
+#################################################################
+tr = readTopology("((((((((P_hawaiiensis_WaikamoiL1:0.9665748366,P_mauiensis_Eke:0.9665748366):0.7086257935,(P_fauriei2:1.231108298,P_hathewayi_1:1.231108298):0.4440923324):0.1767115552,(P_kaduana_PuuKukuiAS:1.851022399,P_mauiensis_PepeAS:1.851022399):0.0008897862802):0.3347375986,P_kaduana_HawaiiLoa:2.186649784):0.302349378,(P_greenwelliae07:1.132253042,P_greenwelliae907:1.132253042):1.35674612):1.689170274,((((P_mariniana_MauiNui:1.99490084,P_hawaiiensis_Makaopuhi:1.99490084):0.7328279804,P_mariniana_Oahu:2.72772882):0.2574151709,P_mariniana_Kokee2:2.985143991):0.4601084855,P_wawraeDL7428:3.445252477):0.732916959):0.7345185743,(P_grandiflora_Kal2:2.480190277,P_hobdyi_Kuia:2.480190277):2.432497733):0.2873119899,((P_hexandra_K1:2.364873976,P_hexandra_M:2.364873976):0.4630447802,P_hexandra_Oahu:2.827918756):2.372081244);")
+total_branch_length = get_treelength(tr)
+ML_yule_birthRate(tr)
+ML_yule_birthRate_wRoot(tr)
+
+trdf = prt(tr)
+birthRate = ML_yule_birthRate(tr)
+deathRate = 0.0
+bd = bd_liks_trdf(trdf, birthRate, deathRate)
+bd_lnL_noTopo = bd.lnl_numBirths + bd.lnl_Births_above_root + bd.lnl_numtips_wOneMinusDeathRate + bd.lnl_branching_times
+
+birthRate = ML_yule_birthRate_wRoot(tr)
+bd_wRoot = bd_liks_trdf(trdf, birthRate, deathRate)
+bd_lnL_noTopo_wRoot = bd_wRoot.lnl_numBirths + bd_wRoot.lnl_Births_above_root + bd_wRoot.lnl_numtips_wOneMinusDeathRate + bd_wRoot.lnl_branching_times
+
+bd.lnL - bd_wRoot.lnL
+bd_lnL_noTopo - bd_lnL_noTopo_wRoot
+
+flat2(bd) ./ flat2(bd_wRoot)
+difs = flat2(bd) .- flat2(bd_wRoot)
+difs[1]
+sum(difs[2:7])
+1 + difs[4]
+difs[2] / 2
+
+#################################################################
+# A simple great ape tree, shortest branch lengths of 1.0
+#################################################################
+tr = readTopology("(((chimp:1,human:1):1,gorilla:2):1,orang:3);")
+total_branch_length = get_treelength(tr)
+ML_yule_birthRate(tr)
+ML_yule_birthRate_wRoot(tr)
+
+trdf = prt(tr)
+birthRate = ML_yule_birthRate(tr)
+deathRate = 0.0
+bd = bd_liks_trdf(trdf, birthRate, deathRate)
+bd_lnL_noTopo = bd.lnl_numBirths + bd.lnl_Births_above_root + bd.lnl_numtips_wOneMinusDeathRate + bd.lnl_branching_times
+
+birthRate = ML_yule_birthRate_wRoot(tr)
+bd_wRoot = bd_liks_trdf(trdf, birthRate, deathRate)
+bd_lnL_noTopo_wRoot = bd_wRoot.lnl_numBirths + bd_wRoot.lnl_Births_above_root + bd_wRoot.lnl_numtips_wOneMinusDeathRate + bd_wRoot.lnl_branching_times
+
+bd.lnL - bd_wRoot.lnL
+bd_lnL_noTopo - bd_lnL_noTopo_wRoot
+
+difs = flat2(bd) .- flat2(bd_wRoot)
+difs[1]
+sum(difs[2:7])
+1 + difs[4]
+difs[2] / 2
+
+"""
+function ML_yule_birthRate_wRoot(tr)
+	num_sp_events = tr.numNodes-tr.numTaxa
+	total_branch_length = get_treelength(tr)
+	lambda = (num_sp_events-0.0) / total_branch_length # -0.0, meaning the root node 
+																										 # speciation event is counted.
+	return lambda
+end
 
 
 
