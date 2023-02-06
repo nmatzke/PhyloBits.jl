@@ -329,7 +329,7 @@ end
 Read a tab-delimited table of numbers to Float64; convert "NA" to NaN; return DataFrame
 """
 function numstxt_to_df(fn; delim='\t', header=false)
-	nums_mat = readdlm(infn, delim, Any, '\n'; header=header)  # NOT "\t", "\n"
+	nums_mat = readdlm(fn, delim, Any, '\n'; header=header)  # NOT "\t", "\n"
 	TF = nums_mat .== "NA"
 	nums_mat[TF] .= NaN
 	nums_mat = convert(Matrix{Float64}, nums_mat)
