@@ -8,6 +8,7 @@ __precompile__(true)  # will cause using / import to load it directly into the
 print("PhyloBits: loading TrUtils.jl dependencies...")
 
 using CSV						# for CSV.read(file, DataFrame; delim="\t")
+using DelimitedFiles	# for readdlm()
 using DataFrames
 #using Plots  						# for Plots.savefig
 using StatsBase					# for countmap(a; alg=:auto)
@@ -18,7 +19,7 @@ using Hwloc					# for Hwloc.num_physical_cores(), Hwloc.num_virtual_cores()
 
 print("...done.\n")
 
-export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, get_installed_path, pp, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
+export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, get_installed_path, pp, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -318,12 +319,23 @@ using DataFrames
 using CSV
 df = readtable(fn)
 """
-function readtable(fn; delim="\t", header=1)
+function readtable(fn; delim='\t', header=1)
 	df = CSV.read(fn, DataFrame; delim=delim, header=header)
 	return df
 end
 
 
+"""
+Read a tab-delimited table of numbers to Float64; convert "NA" to NaN; return DataFrame
+"""
+function numstxt_to_df(fn; delim='\t', header=false)
+	nums_mat = readdlm(infn, delim, Any, '\n'; header=header)  # NOT "\t", "\n"
+	TF = nums_mat .== "NA"
+	nums_mat[TF] .= NaN
+	nums_mat = convert(Matrix{Float64}, nums_mat)
+	df = DataFrame(nums_mat, :auto)
+	return df
+end
 
 # Find all code *.jl files in a package
 
