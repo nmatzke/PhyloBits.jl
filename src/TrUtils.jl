@@ -327,6 +327,13 @@ end
 
 """
 Read a tab-delimited table of numbers to Float64; convert "NA" to NaN; return DataFrame
+
+fn = "/GitHub/PhyBEARS.jl/data/Psychotria_DEC_ancstates_nodes.txt"
+R_ancstates_nodes = numstxt_to_df(fn)
+
+# Has NAs; these are auto-convert to NaN by numstxt_to_df
+fn = "/GitHub/PhyBEARS.jl/data/Psychotria_DEC_ancstates_corners.txt"
+R_ancstates_corners = R_ancstates_nodes = numstxt_to_df(fn)
 """
 function numstxt_to_df(fn; delim='\t', header=false)
 	nums_mat = readdlm(fn, delim, Any, '\n'; header=header)  # NOT "\t", "\n"
