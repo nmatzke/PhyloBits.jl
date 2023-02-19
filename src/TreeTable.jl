@@ -887,7 +887,8 @@ function get_hooks(trdf::DataFrame; hooks_below=1e-6)
 			if (brlen_above_Left_corner <= hooks_below) || (brlen_above_Right_corner <= hooks_below)
 				hooknode_TF[nodeIndex] = true
 			end
-		end
+		end # END if (trdf.nodeType[nodeIndex] == "intern") |
+	end # END for nodeIndex in 1:nrow(trdf)
 	return hooknode_TF
 end
 
