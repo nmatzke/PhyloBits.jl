@@ -43,7 +43,7 @@ using SpecialFunctions			# for e.g. logfactorial()
 
 print("...done.\n")
 
-export get_nodenumbers_above_node, get_postorder_nodenumbers_above_node, initialize_edgematrix, get_pruningwise_postorder_edgematrix, get_LR_uppass_edgematrix, get_LR_downpass_edgematrix, get_LR_uppass_nodeIndexes, get_LR_downpass_nodeIndexes, get_Rnodenums, get_nodeIndex_PNnumber, get_nodeIndex_from_PNnumber, get_nonrootnodes, get_nonrootnodes_trdf, nodetimes, prt, get_taxa_descending_from_each_node, isTip_TF, get_NodeIndexes_from_edge, get_NodeIndex_df_by_tree_edges, get_node_heights, get_node_ages, get_root_age, get_tree_height, branching_times, bd_liks, bd_liks_trdf, get_treelength, ML_yule_birthRate, ML_yule_birthRate_wRoot
+export get_nodenumbers_above_node, get_postorder_nodenumbers_above_node, initialize_edgematrix, get_pruningwise_postorder_edgematrix, get_LR_uppass_edgematrix, get_LR_downpass_edgematrix, get_LR_uppass_nodeIndexes, get_LR_downpass_nodeIndexes, get_Rnodenums, get_nodeIndex_PNnumber, get_nodeIndex_from_PNnumber, get_nonrootnodes, get_nonrootnodes_trdf, nodetimes, get_hooks, prt, get_taxa_descending_from_each_node, isTip_TF, get_NodeIndexes_from_edge, get_NodeIndex_df_by_tree_edges, get_node_heights, get_node_ages, get_root_age, get_tree_height, branching_times, bd_liks, bd_liks_trdf, get_treelength, ML_yule_birthRate, ML_yule_birthRate_wRoot
 
 
 
@@ -58,7 +58,7 @@ using DataFrames
 using PhyloBits
 
 # For Nick's editing (ignore)
-include("/GitHub/BioGeoJulia.jl/notes/TreeTableO.jl")
+include("/GitHub/BioGeoJulia.jl/notes/TreeTable.jl")
 
 #######################################################
 # Typical bifurcating (binary) tree
@@ -74,13 +74,13 @@ iterNum = 1
 indexNum_table = get_nodeIndex_PNnumber(tr)
 indexNum_table
 
-TreeTableO.get_nodenumbers_above_node(tr, tr.root, nodeIndex_array, iterNum, indexNum_table=indexNum_table )
+TreeTable.get_nodenumbers_above_node(tr, tr.root, nodeIndex_array, iterNum, indexNum_table=indexNum_table )
 
 
 #######################################################
 # Tree with a 2-degree node inside a branch
 #######################################################
-include("/GitHub/BioGeoJulia.jl/notes/TreeTableO.jl")
+include("/GitHub/BioGeoJulia.jl/notes/TreeTable.jl")
 
 great_ape_newick_string = "((human:1.0,(chimp:0.5):0.5):1.0,gorilla:2.0);"
 tr = readTopology(great_ape_newick_string)
@@ -93,7 +93,7 @@ iterNum = 1
 indexNum_table = get_nodeIndex_PNnumber(tr)
 indexNum_table
 
-TreeTableO.get_nodenumbers_above_node(tr, tr.root, nodeIndex_array, iterNum, indexNum_table=indexNum_table )
+TreeTable.get_nodenumbers_above_node(tr, tr.root, nodeIndex_array, iterNum, indexNum_table=indexNum_table )
 """
 
 function get_nodenumbers_above_node(tr, rootnodenum, nodeIndex_array, iterNum; indexNum_table)
@@ -184,7 +184,7 @@ using DataFrames
 using PhyloBits
 
 # For Nick's editing (ignore)
-include("/GitHub/BioGeoJulia.jl/notes/TreeTableO.jl")
+include("/GitHub/BioGeoJulia.jl/notes/TreeTable.jl")
 
 #######################################################
 # Typical bifurcating (binary) tree
@@ -200,13 +200,13 @@ iterNum = 1
 indexNum_table = get_nodeIndex_PNnumber(tr)
 indexNum_table
 
-TreeTableO.get_postorder_nodenumbers_above_node(tr, tr.root, nodeIndex_array, iterNum, indexNum_table=indexNum_table)
+TreeTable.get_postorder_nodenumbers_above_node(tr, tr.root, nodeIndex_array, iterNum, indexNum_table=indexNum_table)
 
 
 #######################################################
 # Tree with a 2-degree node inside a branch
 #######################################################
-include("/GitHub/BioGeoJulia.jl/notes/TreeTableO.jl")
+include("/GitHub/BioGeoJulia.jl/notes/TreeTable.jl")
 
 great_ape_newick_string = "((human:1.0,(chimp:0.5):0.5):1.0,gorilla:2.0);"
 tr = readTopology(great_ape_newick_string)
@@ -219,7 +219,7 @@ iterNum = 1
 indexNum_table = get_nodeIndex_PNnumber(tr)
 indexNum_table
 
-TreeTableO.get_postorder_nodenumbers_above_node(tr, tr.root, nodeIndex_array, iterNum, indexNum_table=indexNum_table )
+TreeTable.get_postorder_nodenumbers_above_node(tr, tr.root, nodeIndex_array, iterNum, indexNum_table=indexNum_table )
 """
 
 function get_postorder_nodenumbers_above_node(tr, rootnodenum, nodeIndex_array, iterNum; indexNum_table)
@@ -873,6 +873,23 @@ function nodetimes(tr::HybridNetwork; tipDateEq0=1.0e-7)
 	return(uniq_node_ages)
 end
 
+function get_hooks(trdf::DataFrame; hooks_below=1e-6)
+	hooknode_TF = repeat([false], nrow(trdf))
+	for nodeIndex in 1:nrow(trdf)
+		# Only internal nodes
+		if (trdf.nodeType[nodeIndex] == "intern") || (trdf.nodeType[nodeIndex] == "root")
+			lnode = trdf.leftNodeIndex[nodeIndex]
+			rnode = trdf.rightNodeIndex[nodeIndex]
+			brlen_above_Left_corner = trdf.brlen[lnode]
+			brlen_above_Right_corner = trdf.brlen[rnode]
+			
+			# Is this a hooknode?
+			if (brlen_above_Left_corner <= hooks_below) || (brlen_above_Right_corner <= hooks_below)
+				hooknode_TF[nodeIndex] = true
+			end
+		end
+	return hooknode_TF
+end
 
 """
 using DataFrames
@@ -912,13 +929,13 @@ iterNum = 1
 indexNum_table = get_nodeIndex_PNnumber(tr)
 indexNum_table
 
-TreeTableO.get_postorder_nodenumbers_above_node(tr, tr.root, nodeIndex_array, iterNum, indexNum_table=indexNum_table)
+TreeTable.get_postorder_nodenumbers_above_node(tr, tr.root, nodeIndex_array, iterNum, indexNum_table=indexNum_table)
 
 
 #######################################################
-# Tree with a 2-degree node inside a branch
+# Typical tree with a fossil
 #######################################################
-great_ape_newick_string = "((human:1.0,(chimp:0.5):0.5):1.0,gorilla:2.0);"
+great_ape_newick_string = "((((human:2.5,Lucy:2.5):3.5,chimpanzee:6):1,gorilla:7):5,orangutan:12);"
 tr = readTopology(great_ape_newick_string)
 tr
 
@@ -929,11 +946,29 @@ iterNum = 1
 indexNum_table = get_nodeIndex_PNnumber(tr)
 indexNum_table
 
-TreeTableO.get_postorder_nodenumbers_above_node(tr, tr.root, nodeIndex_array, iterNum, indexNum_table=indexNum_table )
+TreeTable.get_postorder_nodenumbers_above_node(tr, tr.root, nodeIndex_array, iterNum, indexNum_table=indexNum_table)
+
+
+#######################################################
+# Tree with a 2-degree node inside a branch
+#######################################################
+great_ape_newick_string = "((human:1.0,(chimp:0.5):0.5):1.0,gorilla:2.0);";
+tr = readTopology(great_ape_newick_string);
+trdf = prt(tr);
+trdf
+
+nodeIndex_array = collect(repeat([0], tr.numNodes))
+
+iterNum = 1
+
+indexNum_table = get_nodeIndex_PNnumber(tr)
+indexNum_table
+
+TreeTable.get_postorder_nodenumbers_above_node(tr, tr.root, nodeIndex_array, iterNum, indexNum_table=indexNum_table )
 
 """
 # Return a DataFrame with the edge numbers
-function prt(tr, rootnodenum=tr.root, get_taxa_by_node=true)
+function prt(tr, rootnodenum=tr.root, get_taxa_by_node=true; hooks_below=1e-6)
 	#using DataFrames
 	numnodes = length(tr.node)
 	# number of digits for internal node numbers
@@ -1041,6 +1076,10 @@ function prt(tr, rootnodenum=tr.root, get_taxa_by_node=true)
 	trdf[!,:rightNodeIndex] = rightNodeIndex
 	trdf[!,:nodeName] = nodeName
 	trdf[!,:nodeType] = nodeType
+	
+	hook = hooknode_TF = get_hooks(trdf; hooks_below=hooks_below)
+	trdf[!,:hook] = hook
+
 	trdf[!,:reg] = reg
 	
 	if get_taxa_by_node == true
@@ -1061,7 +1100,7 @@ using DataFrames
 using PhyloBits
 #using PhyloPlots
 
-include("/GitHub/BioGeoJulia.jl/notes/TreeTableO.jl")
+include("/GitHub/BioGeoJulia.jl/notes/TreeTable.jl")
 
 great_ape_newick_string = "(((human:6,chimpanzee:6):1,gorilla:7):5,orangutan:12);"
 tr = readTopology(great_ape_newick_string)
@@ -1091,7 +1130,7 @@ taxa = get_taxa_descending_from_each_node(tr, trdf, downpass_edgematrix=get_LR_d
 #######################################################
 # Tree with a 2-degree node inside a branch
 #######################################################
-#include("/GitHub/BioGeoJulia.jl/notes/TreeTableO.jl")
+#include("/GitHub/BioGeoJulia.jl/notes/TreeTable.jl")
 
 great_ape_newick_string = "((human:1.0,(chimp:0.5):0.5):1.0,gorilla:2.0);"
 tr = readTopology(great_ape_newick_string)
