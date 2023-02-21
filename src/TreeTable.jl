@@ -611,7 +611,7 @@ indexNum_table
 # Get the number (index I think!) of the root node, make a DataFrame of the 
 # nodeIndex and PNnumber
 rootnodenum = tr.root
-trdf = prt(tr, rootnodenum)
+trdf = prt(tr; rootnodenum=rootnodenum)
 df
 
 # Get the edges, get the nodeIndexes corresponding to these
@@ -875,7 +875,7 @@ end
 
 
 function get_fossils(tr::HybridNetwork; fossils_older_than=1.0e-5)
-	trdf = prt(tr, rootnodenum=tr.root, get_taxa_by_node=false);
+	trdf = prt(tr; rootnodenum=tr.root, get_taxa_by_node=false);
 	fossils_TF = get_fossils(trdf; fossils_older_than=fossils_older_than)
 	return fossils_TF
 end
@@ -890,7 +890,7 @@ end
 
 # Get NODES (TF for all nodes, including tips) which are fossils (tips, including hooktips, not hooknodes)
 function get_hooks(tr::HybridNetwork; hooks_below=1.0e-6)
-	trdf = prt(tr, rootnodenum=tr.root, get_taxa_by_node=false);
+	trdf = prt(tr; rootnodenum=tr.root, get_taxa_by_node=false);
 	hooknode_TF = get_hooks(trdf; hooks_below=hooks_below)
 	return hooknode_TF
 end
@@ -940,7 +940,7 @@ indexNum_table
 # Get the number (index I think!) of the root node, make a DataFrame of the 
 # nodeIndex and PNnumber
 rootnodenum = tr.root
-trdf = prt(tr, rootnodenum)
+trdf = prt(tr; rootnodenum=rootnodenum)
 trdf
 
 
@@ -1128,7 +1128,7 @@ function prt(tr::HybridNetwork; rootnodenum::Int64=tr.root, get_taxa_by_node::Bo
 	end
 	
 	return(trdf)
-end # END function prt(tr, rootnodenum=tr.root, get_taxa_by_node=true)
+end # END function prt(tr; rootnodenum=tr.root, get_taxa_by_node=true)
 
 
 
@@ -1154,11 +1154,11 @@ indexNum_table = get_nodeIndex_PNnumber(tr)
 rootnodenum = tr.root
 
 # Get trdf WITHOUT "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, false)
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=false)
 
 # Not all columns print now that trdf is big, let's print just the left and right
 # Get trdf WITH "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, true);
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=true);
 headLR(trdf)
 
 downpass_edgematrix = get_LR_downpass_edgematrix(tr)
@@ -1184,11 +1184,11 @@ indexNum_table = get_nodeIndex_PNnumber(tr)
 rootnodenum = tr.root
 
 # Get trdf WITHOUT "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, false)
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=false)
 
 # Not all columns print now that trdf is big, let's print just the left and right
 # Get trdf WITH "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, true);
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=true);
 headLR(trdf)
 
 downpass_edgematrix = get_LR_downpass_edgematrix(tr)
@@ -1326,11 +1326,11 @@ indexNum_table = get_nodeIndex_PNnumber(tr)
 rootnodenum = tr.root
 
 # Get trdf WITHOUT "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, false)
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=false)
 
 # Not all columns print now that trdf is big, let's print just the left and right
 # Get trdf WITH "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, true);
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=true);
 headLR(trdf)
 
 downpass_edgematrix = get_LR_downpass_edgematrix(tr)
@@ -1362,11 +1362,11 @@ indexNum_table = get_nodeIndex_PNnumber(tr)
 rootnodenum = tr.root
 
 # Get trdf WITHOUT "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, false)
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=false)
 
 # Not all columns print now that trdf is big, let's print just the left and right
 # Get trdf WITH "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, true);
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=true);
 headLR(trdf)
 
 downpass_edgematrix = get_LR_downpass_edgematrix(tr)
@@ -1411,7 +1411,7 @@ indexNum_table
 # Get the number (index I think!) of the root node, make a DataFrame of the 
 # nodeIndex and PNnumber
 rootnodenum = tr.root
-trdf = prt(tr, rootnodenum)
+trdf = prt(tr; rootnodenum=rootnodenum)
 df
 
 # Get the edges, get the nodeIndexes corresponding to these
@@ -1515,11 +1515,11 @@ indexNum_table = get_nodeIndex_PNnumber(tr)
 rootnodenum = tr.root
 
 # Get trdf WITHOUT "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, false)
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=false)
 
 # Not all columns print now that trdf is big, let's print just the left and right
 # Get trdf WITH "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, true);
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=true);
 headLR(trdf)
 
 # Get a table with the index numbers of the nodes
@@ -1545,11 +1545,11 @@ indexNum_table = get_nodeIndex_PNnumber(tr)
 rootnodenum = tr.root
 
 # Get trdf WITHOUT "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, false)
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=false)
 
 # Not all columns print now that trdf is big, let's print just the left and right
 # Get trdf WITH "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, true);
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=true);
 headLR(trdf)
 
 # Get a table with the index numbers of the nodes
@@ -1664,11 +1664,11 @@ indexNum_table = get_nodeIndex_PNnumber(tr)
 rootnodenum = tr.root
 
 # Get trdf WITHOUT "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, false)
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=false)
 
 # Not all columns print now that trdf is big, let's print just the left and right
 # Get trdf WITH "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, true);
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=true);
 headLR(trdf)
 
 downpass_edgematrix = get_LR_downpass_edgematrix(tr)
@@ -1695,11 +1695,11 @@ indexNum_table = get_nodeIndex_PNnumber(tr)
 rootnodenum = tr.root
 
 # Get trdf WITHOUT "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, false)
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=false)
 
 # Not all columns print now that trdf is big, let's print just the left and right
 # Get trdf WITH "taxa" field (species descending from each node)
-trdf = prt(tr, rootnodenum, true);
+trdf = prt(tr; rootnodenum=rootnodenum, get_taxa_by_node=true);
 headLR(trdf)
 
 downpass_edgematrix = get_LR_downpass_edgematrix(tr)
@@ -2077,7 +2077,7 @@ ML_yule_birthRate_wRoot(tr)
 function ML_yule_birthRate(tr::HybridNetwork; hooks_below=1.0e-6)
 	# You *HAVE* to remove (1) direct ancestor nodes (singletons) and
 	#                      (2) hook nodes & tips; neither are direct-ancestor nodes
-	trdf = prt(tr, rootnodenum=tr.root, get_taxa_by_node=false; hooks_below=hooks_below);
+	trdf = prt(tr; rootnodenum=tr.root, get_taxa_by_node=false, hooks_below=hooks_below);
 	
 	num_speciation_nodes = get_num_speciation_nodes(trdf; hooks_below=hooks_below)
 	num_tips_from_speciation = get_num_tips_from_speciation(trdf; hooks_below=hooks_below)
@@ -2152,7 +2152,7 @@ difs[2] / 2
 function ML_yule_birthRate_wRoot(tr::HybridNetwork; hooks_below=1.0e-6)
 	# You *HAVE* to remove (1) direct ancestor nodes (singletons) and
 	#                      (2) hook nodes & tips; neither are direct-ancestor nodes
-	trdf = prt(tr, rootnodenum=tr.root, get_taxa_by_node=false; hooks_below=hooks_below);
+	trdf = prt(tr; rootnodenum=tr.root, get_taxa_by_node=false, hooks_below=hooks_below);
 	
 	num_speciation_nodes = get_num_speciation_nodes(trdf; hooks_below=hooks_below)
 	num_tips_from_speciation = get_num_tips_from_speciation(trdf; hooks_below=hooks_below)
@@ -2181,7 +2181,7 @@ end
 # i.e. traditional nb.node in Yule process calcs etc.
 # eliminates hooknodes, hooktips, and direct ancestor nodes
 function get_num_speciation_nodes(tr::HybridNetwork; hooks_below=1.0e-6)
-	trdf = prt(tr, rootnodenum=tr.root, get_taxa_by_node=false; hooks_below=hooks_below);
+	trdf = prt(tr; rootnodenum=tr.root, get_taxa_by_node=false, hooks_below=hooks_below);
 	#numNodes = nrow(trdf)
 	#numNodes = tr.numNodes
 	num_speciation_nodes = get_num_speciation_nodes(trdf; hooks_below=hooks_below)
@@ -2199,7 +2199,7 @@ function get_num_tips_from_speciation(trdf::DataFrame; hooks_below=1.0e-6)
 end
 
 function get_num_tips_from_speciation(tr::HybridNetwork; hooks_below=1.0e-6)
-	trdf = prt(tr, rootnodenum=tr.root, get_taxa_by_node=false; hooks_below=hooks_below);
+	trdf = prt(tr; rootnodenum=tr.root, get_taxa_by_node=false, hooks_below=hooks_below);
 	num_tips_from_speciation = get_num_tips_from_speciation(trdf; hooks_below=hooks_below)
 	return(num_tips_from_speciation)
 end
