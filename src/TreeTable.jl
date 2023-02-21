@@ -2170,8 +2170,8 @@ end
 # eliminates hooknodes, hooktips, and direct ancestor nodes
 function get_num_speciation_nodes(trdf::DataFrame; hooks_below=1.0e-6)
 	numNodes = nrow(trdf)
-	hooktips_TF = (trdf.hook .+ trdf.nodeType.=="tip") .== 2
-	hooknodes_TF = (trdf.hook .+ trdf.nodeType.=="intern" .+ trdf.nodeType.=="root") .== 2
+	hooktips_TF = (trdf.hook .+ (trdf.nodeType .== "tip")) .== 2
+	hooknodes_TF = (trdf.hook .+ (trdf.nodeType .== "intern") .+ (trdf.nodeType .== "root")) .== 2
 	direct_TF = trdf.nodeType .== "direct"
 	num_speciation_nodes = numNodes - sum(hooknodes_TF) - sum(hooktips_TF) - sum(direct_TF)
 	return(num_speciation_nodes)
@@ -2193,7 +2193,7 @@ end
 # eliminates hooknodes, hooktips, and direct ancestor nodes
 function get_num_tips_from_speciation(trdf::DataFrame; hooks_below=1.0e-6)
 	numTaxa = sum(trdf.nodeType .== "tip")
-	hooktips_TF = (trdf.hook .+ trdf.nodeType.=="tip") .== 2
+	hooktips_TF = (trdf.hook .+ (trdf.nodeType .== "tip")) .== 2
 	num_tips_from_speciation = numTaxa - sum(hooktips_TF)
 	return(num_tips_from_speciation)
 end
