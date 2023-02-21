@@ -1000,7 +1000,7 @@ TreeTable.get_postorder_nodenumbers_above_node(tr, tr.root, nodeIndex_array, ite
 
 """
 # Return a DataFrame with the edge numbers
-function prt(tr, rootnodenum=tr.root, get_taxa_by_node=true; hooks_below=1.0e-6, fossils_older_than=1.0e-5)
+function prt(tr::HybridNetwork, rootnodenum::Int64=tr.root, get_taxa_by_node::Bool=true; hooks_below::Float64=1.0e-6, fossils_older_than::Float64=1.0e-5)
 	#using DataFrames
 	numnodes = length(tr.node)
 	# number of digits for internal node numbers
