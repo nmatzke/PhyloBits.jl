@@ -43,7 +43,7 @@ using SpecialFunctions			# for e.g. logfactorial()
 
 print("...done.\n")
 
-export get_nodenumbers_above_node, get_postorder_nodenumbers_above_node, initialize_edgematrix, get_pruningwise_postorder_edgematrix, get_LR_uppass_edgematrix, get_LR_downpass_edgematrix, get_LR_uppass_nodeIndexes, get_LR_downpass_nodeIndexes, get_Rnodenums, get_nodeIndex_PNnumber, get_nodeIndex_from_PNnumber, get_nonrootnodes, get_nonrootnodes_trdf, nodetimes, get_fossils, get_hooks, prt, get_taxa_descending_from_each_node, isTip_TF, get_NodeIndexes_from_edge, get_NodeIndex_df_by_tree_edges, get_node_heights, get_node_ages, get_root_age, get_tree_height, branching_times, bd_liks, bd_liks_trdf, get_treelength, ML_yule_birthRate, ML_yule_birthRate_wRoot, get_num_speciation_nodes, get_num_tips_from_speciation
+export get_nodenumbers_above_node, get_postorder_nodenumbers_above_node, initialize_edgematrix, get_pruningwise_postorder_edgematrix, get_LR_uppass_edgematrix, uppass_edgematrix_to_tuples, get_LR_downpass_edgematrix, get_LR_uppass_nodeIndexes, get_LR_downpass_nodeIndexes, get_Rnodenums, get_nodeIndex_PNnumber, get_nodeIndex_from_PNnumber, get_nonrootnodes, get_nonrootnodes_trdf, nodetimes, get_fossils, get_hooks, prt, get_taxa_descending_from_each_node, isTip_TF, get_NodeIndexes_from_edge, get_NodeIndex_df_by_tree_edges, get_node_heights, get_node_ages, get_root_age, get_tree_height, branching_times, bd_liks, bd_liks_trdf, get_treelength, ML_yule_birthRate, ML_yule_birthRate_wRoot, get_num_speciation_nodes, get_num_tips_from_speciation
 
 
 
@@ -485,6 +485,43 @@ function get_LR_uppass_edgematrix(tr)
 	uppass_edgematrix = res[1]
 	return(uppass_edgematrix)
 end
+
+"""
+uppass_edgematrix = res.uppass_edgematrix
+list_of_tuples = uppass_edgematrix_to_tuples(uppass_edgematrix)
+"""
+function uppass_edgematrix_to_tuples(uppass_edgematrix)
+	edgenum = 0
+	list_of_tuples = []
+	
+	while (edgenum < dim(uppass_edgematrix)[1])
+		edgenum = edgenum + 1
+		i = edgenum
+		j = edgenum + 1
+		
+		ancnode1 = uppass_edgematrix[i,1]
+		if (j <= dim(uppass_edgematrix)[1])
+			ancnode2 = uppass_edgematrix[j,1]
+		else
+			ancnode2 = -999
+		end
+		
+		# Check if the ancnodes are equal
+		if (ancnode1 == ancnode2)
+			# Standard bifurcating node
+			Lnode = uppass_edgematrix[i,2]
+			Rnode = uppass_edgematrix[j,2]
+			push!(list_of_tuples, (ancnode1, Lnode, Rnode))
+			edgenum = edgenum + 1
+		else
+			# Singleton node
+			Lnode = uppass_edgematrix[i,2]
+			push!(list_of_tuples, (ancnode1, Lnode))
+		end
+	end # END for rownum in 1:nrow(uppass_edgematrix)
+	return list_of_tuples
+end
+
 
 
 # Get the node indexes for an downpass from the root to the tips
