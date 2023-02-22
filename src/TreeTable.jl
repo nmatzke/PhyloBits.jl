@@ -43,7 +43,7 @@ using SpecialFunctions			# for e.g. logfactorial()
 
 print("...done.\n")
 
-export get_nodenumbers_above_node, get_postorder_nodenumbers_above_node, initialize_edgematrix, get_pruningwise_postorder_edgematrix, get_LR_uppass_edgematrix, uppass_edgematrix_to_tuples, get_LR_downpass_edgematrix, get_LR_uppass_nodeIndexes, get_LR_downpass_nodeIndexes, get_Rnodenums, get_nodeIndex_PNnumber, get_nodeIndex_from_PNnumber, get_nonrootnodes, get_nonrootnodes_trdf, nodetimes, get_fossils, get_hooks, prt, get_taxa_descending_from_each_node, isTip_TF, get_NodeIndexes_from_edge, get_NodeIndex_df_by_tree_edges, get_node_heights, get_node_ages, get_root_age, get_tree_height, branching_times, bd_liks, bd_liks_trdf, get_treelength, ML_yule_birthRate, ML_yule_birthRate_wRoot, get_num_speciation_nodes, get_num_tips_from_speciation
+export get_nodenumbers_above_node, get_postorder_nodenumbers_above_node, initialize_edgematrix, get_pruningwise_postorder_edgematrix, get_LR_uppass_edgematrix, uppass_edgematrix_to_tuples, get_LR_downpass_edgematrix, get_LR_uppass_nodeIndexes, get_LR_downpass_nodeIndexes, get_Rnodenums, get_nodeIndex_PNnumber, get_nodeIndex_from_PNnumber, get_nonrootnodes, get_nonrootnodes_trdf, nodetimes, get_fossils, get_hooks, prt, get_taxa_descending_from_each_node, isTip_TF, get_NodeIndexes_from_edge, get_NodeIndex_df_by_tree_edges, get_node_heights, get_node_ages, get_root_age, get_tree_height, branching_times, bd_liks, bd_liks_trdf, get_treelength, ML_yule_birthRate, ML_yule_birthRate_wRoot, get_num_speciation_nodesTips, get_num_tips_from_speciation
 
 
 
@@ -2003,7 +2003,7 @@ function bd_liks_trdf(trdf, birthRate=1.0, deathRate=0.0)
 	# Get basic tree info
 	# Get numInternal, numTips, but leaving out direct ancestors and hook tips/nodes
 	numTips = num_tips_from_speciation = get_num_tips_from_speciation(trdf)
-	nb_node = num_speciation_nodes = get_num_speciation_nodes(trdf)
+	nb_node = num_speciation_nodes = get_num_speciation_nodesTips(trdf)
 	# Old:
 	#numTips = sum(trdf.nodeType .== "tip")
 	#nb_node = sum(trdf.nodeType .== "intern") + sum(trdf.nodeType .== "root")
@@ -2120,7 +2120,7 @@ function ML_yule_birthRate(tr::HybridNetwork; hooks_below=1.0e-6)
 	#                      (2) hook nodes & tips; neither are direct-ancestor nodes
 	trdf = prt(tr; rootnodenum=tr.root, get_taxa_by_node=false, hooks_below=hooks_below);
 	
-	num_speciation_nodes = get_num_speciation_nodes(trdf; hooks_below=hooks_below)
+	num_speciation_nodes = get_num_speciation_nodesTips(trdf; hooks_below=hooks_below)
 	num_tips_from_speciation = get_num_tips_from_speciation(trdf; hooks_below=hooks_below)
 	
 	#num_sp_events = tr.numNodes-tr.numTaxa
@@ -2195,7 +2195,7 @@ function ML_yule_birthRate_wRoot(tr::HybridNetwork; hooks_below=1.0e-6)
 	#                      (2) hook nodes & tips; neither are direct-ancestor nodes
 	trdf = prt(tr; rootnodenum=tr.root, get_taxa_by_node=false, hooks_below=hooks_below);
 	
-	num_speciation_nodes = get_num_speciation_nodes(trdf; hooks_below=hooks_below)
+	num_speciation_nodes = get_num_speciation_nodesTips(trdf; hooks_below=hooks_below)
 	num_tips_from_speciation = get_num_tips_from_speciation(trdf; hooks_below=hooks_below)
 	
 	#num_sp_events = tr.numNodes-tr.numTaxa
@@ -2209,7 +2209,7 @@ end
 # Get the number of nodes resulting from speciation events (tips+nodes)
 # i.e. traditional nb.node in Yule process calcs etc.
 # eliminates hooknodes, hooktips, and direct ancestor nodes
-function get_num_speciation_nodes(trdf::DataFrame; hooks_below=1.0e-6)
+function get_num_speciation_nodesTips(trdf::DataFrame; hooks_below=1.0e-6)
 	numNodes = nrow(trdf)
 	hooktips_TF = (trdf.hook .+ (trdf.nodeType .== "tip")) .== 2
 	hooknodes_TF = (trdf.hook .+ (trdf.nodeType .== "intern") .+ (trdf.nodeType .== "root")) .== 2
@@ -2221,11 +2221,11 @@ end
 # Get the number of nodes resulting from speciation events (tips+nodes)
 # i.e. traditional nb.node in Yule process calcs etc.
 # eliminates hooknodes, hooktips, and direct ancestor nodes
-function get_num_speciation_nodes(tr::HybridNetwork; hooks_below=1.0e-6)
+function get_num_speciation_nodesTips(tr::HybridNetwork; hooks_below=1.0e-6)
 	trdf = prt(tr; rootnodenum=tr.root, get_taxa_by_node=false, hooks_below=hooks_below);
 	#numNodes = nrow(trdf)
 	#numNodes = tr.numNodes
-	num_speciation_nodes = get_num_speciation_nodes(trdf; hooks_below=hooks_below)
+	num_speciation_nodes = get_num_speciation_nodesTips(trdf; hooks_below=hooks_below)
 	return(num_speciation_nodes)
 end
 
