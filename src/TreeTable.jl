@@ -1885,7 +1885,7 @@ function bd_liks(tr, birthRate=1.0, deathRate=0.0)
 	"""
 	# numTips, corrected to take out direct ancestor and hooknodes/tips
 	numTips = num_tips_from_speciation = get_num_tips_from_speciation(tr)
-	nb_node = num_speciation_nodes = get_num_speciation_nodesTips(tr) - numTips
+	nb_node = num_speciation_nodesTips = get_num_speciation_nodesTips(tr) - numTips
 
 	#numTips = tr.numTaxa
 	#nb_node = tr.numNodes - tr.numTaxa
@@ -2007,7 +2007,7 @@ function bd_liks_trdf(trdf, birthRate=1.0, deathRate=0.0)
 	# Get basic tree info
 	# Get numInternal, numTips, but leaving out direct ancestors and hook tips/nodes
 	numTips = num_tips_from_speciation = get_num_tips_from_speciation(trdf)
-	nb_node = num_speciation_nodes = get_num_speciation_nodesTips(trdf) - numTips
+	nb_node = num_speciation_nodesTips = get_num_speciation_nodesTips(trdf) - numTips
 	# Old:
 	#numTips = sum(trdf.nodeType .== "tip")
 	#nb_node = sum(trdf.nodeType .== "intern") + sum(trdf.nodeType .== "root")
@@ -2124,11 +2124,11 @@ function ML_yule_birthRate(tr::HybridNetwork; hooks_below=1.0e-6)
 	#                      (2) hook nodes & tips; neither are direct-ancestor nodes
 	trdf = prt(tr; rootnodenum=tr.root, get_taxa_by_node=false, hooks_below=hooks_below);
 	
-	num_speciation_nodes = get_num_speciation_nodesTips(trdf; hooks_below=hooks_below)
+	num_speciation_nodesTips = get_num_speciation_nodesTips(trdf; hooks_below=hooks_below)
 	num_tips_from_speciation = get_num_tips_from_speciation(trdf; hooks_below=hooks_below)
 	
 	#num_sp_events = tr.numNodes-tr.numTaxa
-	num_sp_events = num_speciation_nodes - num_tips_from_speciation
+	num_sp_events = num_speciation_nodesTips - num_tips_from_speciation
 	total_branch_length = get_treelength(tr)
 	lambda = (num_sp_events-1.0) / total_branch_length # -1.0, following Yule birthdeath function
 	return lambda
@@ -2199,11 +2199,11 @@ function ML_yule_birthRate_wRoot(tr::HybridNetwork; hooks_below=1.0e-6)
 	#                      (2) hook nodes & tips; neither are direct-ancestor nodes
 	trdf = prt(tr; rootnodenum=tr.root, get_taxa_by_node=false, hooks_below=hooks_below);
 	
-	num_speciation_nodes = get_num_speciation_nodesTips(trdf; hooks_below=hooks_below)
+	num_speciation_nodesTips = get_num_speciation_nodesTips(trdf; hooks_below=hooks_below)
 	num_tips_from_speciation = get_num_tips_from_speciation(trdf; hooks_below=hooks_below)
 	
 	#num_sp_events = tr.numNodes-tr.numTaxa
-	num_sp_events = num_speciation_nodes - num_tips_from_speciation
+	num_sp_events = num_speciation_nodesTips - num_tips_from_speciation
 	total_branch_length = get_treelength(tr)
 	lambda = (num_sp_events-0.0) / total_branch_length # -0.0, meaning the root node 
 																										 # speciation event is counted.
@@ -2218,7 +2218,7 @@ function get_num_speciation_nodesTips(trdf::DataFrame; hooks_below=1.0e-6)
 	hooktips_TF = (trdf.hook .+ (trdf.nodeType .== "tip")) .== 2
 	hooknodes_TF = (trdf.hook .+ (trdf.nodeType .== "intern") .+ (trdf.nodeType .== "root")) .== 2
 	direct_TF = trdf.nodeType .== "direct"
-	num_speciation_nodes = numNodes - sum(hooknodes_TF) - sum(hooktips_TF) - sum(direct_TF)
+	num_speciation_nodesTips = numNodes - sum(hooknodes_TF) - sum(hooktips_TF) - sum(direct_TF)
 	return(num_speciation_nodes)
 end
 
@@ -2229,7 +2229,7 @@ function get_num_speciation_nodesTips(tr::HybridNetwork; hooks_below=1.0e-6)
 	trdf = prt(tr; rootnodenum=tr.root, get_taxa_by_node=false, hooks_below=hooks_below);
 	#numNodes = nrow(trdf)
 	#numNodes = tr.numNodes
-	num_speciation_nodes = get_num_speciation_nodesTips(trdf; hooks_below=hooks_below)
+	num_speciation_nodesTips = get_num_speciation_nodesTips(trdf; hooks_below=hooks_below)
 	return(num_speciation_nodes)
 end
 
