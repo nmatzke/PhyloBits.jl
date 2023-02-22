@@ -2219,7 +2219,7 @@ function get_num_speciation_nodesTips(trdf::DataFrame; hooks_below=1.0e-6)
 	hooknodes_TF = (trdf.hook .+ (trdf.nodeType .== "intern") .+ (trdf.nodeType .== "root")) .== 2
 	direct_TF = trdf.nodeType .== "direct"
 	num_speciation_nodesTips = numNodes - sum(hooknodes_TF) - sum(hooktips_TF) - sum(direct_TF)
-	return(num_speciation_nodes)
+	return(num_speciation_nodesTips)
 end
 
 # Get the number of nodes resulting from speciation events (tips+nodes)
@@ -2230,7 +2230,7 @@ function get_num_speciation_nodesTips(tr::HybridNetwork; hooks_below=1.0e-6)
 	#numNodes = nrow(trdf)
 	#numNodes = tr.numNodes
 	num_speciation_nodesTips = get_num_speciation_nodesTips(trdf; hooks_below=hooks_below)
-	return(num_speciation_nodes)
+	return(num_speciation_nodesTips)
 end
 
 # Get the number of tips resulting from speciation events
