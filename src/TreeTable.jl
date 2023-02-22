@@ -2002,8 +2002,8 @@ function bd_liks_trdf(trdf, birthRate=1.0, deathRate=0.0)
 	"""
 	# Get basic tree info
 	# Get numInternal, numTips, but leaving out direct ancestors and hook tips/nodes
-	numTips = num_tips_from_speciation = get_num_tips_from_speciation(tr)
-	nb_node = num_speciation_nodes = get_num_speciation_nodes(tr)
+	numTips = num_tips_from_speciation = get_num_tips_from_speciation(trdf)
+	nb_node = num_speciation_nodes = get_num_speciation_nodes(trdf)
 	# Old:
 	#numTips = sum(trdf.nodeType .== "tip")
 	#nb_node = sum(trdf.nodeType .== "intern") + sum(trdf.nodeType .== "root")
