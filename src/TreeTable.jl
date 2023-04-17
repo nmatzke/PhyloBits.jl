@@ -123,11 +123,13 @@ function get_nodenumbers_above_node(tr, rootnodenum, nodeIndex_array, iterNum; i
   	if (typical_or_root_TF == true)
 			# Left descendant edge
 			one_edge = tr.node[rootnodenum].edge[1]
+			print(one_edge)
 			anc_decPNnumbers = get_NodeIndexes_from_edge(one_edge)
 			left_dec_PNnumber = anc_decPNnumbers[2]
 			left_dec_nodeIndex = get_nodeIndex_from_PNnumber(left_dec_PNnumber, indexNum_table=indexNum_table)
 		
 			one_edge = tr.node[rootnodenum].edge[2]
+			print(one_edge)
 			anc_decPNnumbers = get_NodeIndexes_from_edge(one_edge)
 			right_dec_PNnumber = anc_decPNnumbers[2]
 			right_dec_nodeIndex = get_nodeIndex_from_PNnumber(right_dec_PNnumber, indexNum_table=indexNum_table)
@@ -1034,6 +1036,8 @@ indexNum_table = get_nodeIndex_PNnumber(tr)
 indexNum_table
 
 TreeTable.get_postorder_nodenumbers_above_node(tr, tr.root, nodeIndex_array, iterNum, indexNum_table=indexNum_table )
+
+rootnodenum::Int64=tr.root; get_taxa_by_node::Bool=true;  hooks_below::Float64=1.0e-6; fossils_older_than::Float64=1.0e-5
 
 """
 # Return a DataFrame with the edge numbers
