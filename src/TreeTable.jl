@@ -123,13 +123,13 @@ function get_nodenumbers_above_node(tr, rootnodenum, nodeIndex_array, iterNum; i
   	if (typical_or_root_TF == true)
 			# Left descendant edge
 			one_edge = tr.node[rootnodenum].edge[1]
-			print(one_edge)
+			#print(one_edge)
 			anc_decPNnumbers = get_NodeIndexes_from_edge(one_edge)
 			left_dec_PNnumber = anc_decPNnumbers[2]
 			left_dec_nodeIndex = get_nodeIndex_from_PNnumber(left_dec_PNnumber, indexNum_table=indexNum_table)
 		
 			one_edge = tr.node[rootnodenum].edge[2]
-			print(one_edge)
+			#print(one_edge)
 			anc_decPNnumbers = get_NodeIndexes_from_edge(one_edge)
 			right_dec_PNnumber = anc_decPNnumbers[2]
 			right_dec_nodeIndex = get_nodeIndex_from_PNnumber(right_dec_PNnumber, indexNum_table=indexNum_table)
@@ -1500,10 +1500,13 @@ function get_NodeIndexes_from_edge(one_edge)
 	end
 
 	
-	# Declare error if both node numbers are positive (both are tips)
+	# Declare error if both node numbers are positive (both are tips -- can happen with node-labeled 
+	# trees, due to readTopology's assumptions)
 	positiveTF = tmp_nodePNnumbers .> 0
 	if (sum(positiveTF) == 2)
-		error("Error in get_NodeIndexes_from_edge(): both node numbers attached to this edge are tips (PhyloNetworks node number > 0). This should be impossible. It may mean that you read in a Newick string that already had node labels. You can remove these in R with tr$node.label=NULL.")
+		txt = "STOP ERROR in get_NodeIndexes_from_edge(): both node numbers attached to this edge are tips (PhyloNetworks node number > 0). This should be impossible, for a standard binary tree. (PhyloNetworks uses node labels to deal with phylogenetic networks etc.). It may mean that you read in a Newick string that already had node labels. You can remove these in R with tr$node.label=NULL, then writing the tree out. Or, for simulated trees, use e.g. 'living_tree_noNodeLabels.newick' instead of 'living_tree.newick'."
+		print(txt)
+		error(txt)
 	end
 	
 	# If one PNnumber is positive and one negative, then you have a descendant tip, and ancestor internal node
