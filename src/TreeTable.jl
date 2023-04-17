@@ -1496,7 +1496,9 @@ function get_NodeIndexes_from_edge(one_edge)
 	# Declare error if both node numbers are the same
 	PNnumber_eq_0_TF = tmp_nodePNnumbers .== 0
 	if (sum(PNnumber_eq_0_TF) > 0)
-		error("Error in get_NodeIndexes_from_edge(): both node numbers attached to this edge are the same. This should be impossible.")
+		txt = "Error in get_NodeIndexes_from_edge(): both node numbers attached to this edge are the same. This should be impossible."
+		print(txt)
+		error(txt)
 	end
 
 	
