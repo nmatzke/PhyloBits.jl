@@ -1487,8 +1487,8 @@ function get_NodeIndexes_from_edge(one_edge)
 	decPNnumber = 0
 	
 	# Record the PN (PhyloNetworks) node numbers
-	print(one_edge)
-	print(one_edge.node)
+	#print(one_edge)
+	#print(one_edge.node)
 	
 	
 	tmp_nodePNnumbers[1] = one_edge.node[1].number

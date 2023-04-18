@@ -46,8 +46,24 @@ include("/Users/nmat471/HD/GitHub/PhyBEARS.jl/sims/sunkNZ_v1/prt_nodelabel_trees
 #@testset "prt_nodelabel_trees_v1.jl" begin
 # 
 
+cd("/Users/nmat471/HD/GitHub/PhyBEARS.jl/sims/sunkNZ_v1/")
+
+lgdata_fn = "geog_living.data"
+geog_df = Parsers.getranges_from_LagrangePHYLIP(lgdata_fn)
 
 
+# Example tree
+trfn = "living_tree_noNodeLabels.newick"
+tr = readTopology(trfn)
+trdf = prt(tr);
+
+trfn = "living_tree.newick"
+tr = readTopology(trfn)
+trdf = prt(tr);
+
+
+living_tree_noNodeLabels.newick
+living_tree.newick
 
 
 
