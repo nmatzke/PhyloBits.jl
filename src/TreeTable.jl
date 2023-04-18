@@ -1487,6 +1487,10 @@ function get_NodeIndexes_from_edge(one_edge)
 	decPNnumber = 0
 	
 	# Record the PN (PhyloNetworks) node numbers
+	print(one_edge)
+	print(one_edge.node)
+	
+	
 	tmp_nodePNnumbers[1] = one_edge.node[1].number
 	tmp_nodePNnumbers[2] = one_edge.node[2].number
 	tmp_nodeIndices_on_edge = collect(1:2)
@@ -1500,7 +1504,8 @@ function get_NodeIndexes_from_edge(one_edge)
 		print(txt)
 		error(txt)
 	end
-
+	
+	
 	
 	# Declare error if both node numbers are positive (both are tips -- can happen with node-labeled 
 	# trees, due to readTopology's assumptions)
