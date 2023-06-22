@@ -7,6 +7,7 @@ __precompile__(true)  # will cause using / import to load it directly into the
 
 print("PhyloBits: loading TrUtils.jl dependencies...")
 
+using Pkg						# for Pkg.dependencies()
 using CSV						# for CSV.read(file, DataFrame; delim="\t")
 using DelimitedFiles	# for readdlm()
 using DataFrames
@@ -14,12 +15,13 @@ using DataFrames
 using StatsBase					# for countmap(a; alg=:auto)
 using Distributed 	# for workers, spawnat :any, etc.
 using Hwloc					# for Hwloc.num_physical_cores(), Hwloc.num_virtual_cores()
-
+using Chain					# for get_pkg_version, @chain
+using UUIDs					# for UUID() object
 #using RCall
 
 print("...done.\n")
 
-export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, get_installed_path, pp, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
+export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_uuid, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -232,6 +234,153 @@ package_string = "PhyBEARS"
 function pp(pathof_result, package_string)
 	return get_installed_path(pathof_result, package_string)
 end
+
+
+
+"""
+Get package version
+
+Source: How to check the version of a package?
+https://www.juliabloggers.com/how-to-check-the-version-of-a-package/
+
+# Example:
+version_num = get_pkg_version("DataFrames")
+version_num
+type(version_num)
+string(version_num)
+"""
+get_pkg_version(name::AbstractString) = @chain Pkg.dependencies() begin
+	values
+	[x for x in _ if x.name == name]
+	only
+	_.version
+end
+
+
+
+"""
+Get package uuid
+
+Source: How to check the version of a package?
+https://www.juliabloggers.com/how-to-check-the-version-of-a-package/
+
+# Example:
+uuid_value = get_pkg_uuid("DataFrames")
+uuid_value
+type(uuid_value)
+string(uuid_value)
+"""
+get_pkg_uuid(name::AbstractString) = @chain Pkg.dependencies() begin
+	values
+	[x for x in _ if x.name == name]
+	only
+	_.UUID
+end
+uuid_value = get_pkg_uuid("DataFrames")
+
+
+"""
+Get status of all installed packages
+
+Source: How to check the version of a package?
+https://www.juliabloggers.com/how-to-check-the-version-of-a-package/
+
+# Example:
+version_num = get_pkg_version("DataFrames")
+version_num
+type(version_num)
+string(version_num)
+
+get_pkg_status()
+get_pkg_status(direct=true)
+get_pkg_status(direct=false)
+"""
+get_pkg_status(;direct::Bool=true) = @chain Pkg.dependencies() begin
+	values
+	DataFrame
+	direct ? _[_.is_direct_dep, :] : _
+	select(:name, :version,
+				[:is_tracking_path, :is_tracking_repo, :is_tracking_registry] =>
+				ByRow((a, b, c) -> ["path", "repo", "registry"][a+2b+3c]) =>
+				:tracking)
+end
+
+
+
+"""
+Helper function "has()" for get_keys_matching_value, for searching dict values
+"""
+has(x::AbstractString, y) = x == y  # just returning true/false
+
+"""
+Helper function "has()" for get_keys_matching_value, for recursive searching dict values
+"""
+has(x::AbstractArray, y) = any(has(i, y) for i in x)
+
+"""
+Helper function "has()" for get_keys_matching_value, for recursive searching dict values
+"""
+has_name(x::Pkg.API.PackageInfo, y::String) = x.name == y  # just returning true/false
+
+
+"""
+# Get keys matching a dictionary value
+
+# Source:
+https://discourse.julialang.org/t/finding-the-set-of-keys-with-the-same-value-in-a-dictionnary/10578/9
+
+d = Dict( "dinner 1" => ["apple", ["carrot", "beans"]], "dinner 2" => "rice", "dinner 3" => "carrot")
+#  "dinner 2" => "rice"
+#  "dinner 1" => Any["apple", ["carrot", "beans"]]
+#  "dinner 3" => "carrot"
+
+tmpstr = "carrot"
+
+get_keys_matching_value(d, tmpstr)
+
+"""
+function get_keys_matching_value(d::Dict, tmpstr::String)
+	key_value = [k for (k,v) in d if has(v, tmpstr)]
+end
+
+"""
+Get the key(s) matching a particular package name
+
+# Example
+x = Pkg.dependencies();
+tmpstr = "DataFrames"
+matching_keys_UUIDs = get_keys_matching_name(x, tmpstr)
+uuid_strs = UUIDs_to_string(matching_keys_UUIDs)
+uuid_strs[1]
+"""
+function get_keys_matching_name(d::Dict{UUID, Pkg.API.PackageInfo}, tmpstr::String)
+	key_value = [k for (k,v) in d if has_name(v, tmpstr)]
+end
+
+
+"""
+Turn a vector of UUID objects into a vector of strings of uuids
+
+# Example
+x = Pkg.dependencies();
+tmpstr = "DataFrames"
+get_keys_matching_value(x, tmpstr)
+
+
+"""
+function UUIDs_to_string(z::Vector{UUID})
+	uuid_strs = repeat([""], length(z))
+	uuid_str = ""
+	for i in 1:length(z)
+		uuid_str = repr(z[i])
+		uuid_str = replace(uuid_str, """UUID(\"""" => "")
+		uuid_str = replace(uuid_str, """\")""" => "")
+		uuid_strs[i] = uuid_str
+	end
+	return(uuid_strs)
+end
+
+
 
 """
 Merge two paths, ensuring the correct number of slashes
@@ -611,13 +760,13 @@ function type(obj)
 end
 
 # class
-# Returns a plain-test version of the type/class
+# Returns a plain-text version of the type/class
 function class(obj)
 	string(typeof(obj))
 end
 
 # Rclass
-# Returns a plain-test version of the type/class
+# Returns a plain-text version of the type/class
 function Rclass(obj)
 	string(typeof(obj))
 end
