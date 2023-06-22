@@ -345,6 +345,11 @@ Get the key(s) matching a particular package name
 tmpstr = "DataFrames"
 uuid_strs = get_pkg_uuid(tmpstr)
 uuid_strs[1]
+
+using PhyloBits
+tmpstr = "SciMLBase"
+uuid_strs = PhyloBits.TrUtils.get_pkg_uuid(tmpstr)
+uuid_strs[1]
 """
 function get_pkg_uuid(tmpstr::String)
 	d = Pkg.dependencies()
