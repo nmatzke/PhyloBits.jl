@@ -21,7 +21,7 @@ using UUIDs					# for UUID() object
 
 print("...done.\n")
 
-export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_uuid, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
+export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, get_pkg_uuid, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -258,25 +258,6 @@ end
 
 
 
-"""
-Get package uuid
-
-Source: How to check the version of a package?
-https://www.juliabloggers.com/how-to-check-the-version-of-a-package/
-
-# Example:
-uuid_value = get_pkg_uuid("DataFrames")
-uuid_value
-type(uuid_value)
-string(uuid_value)
-"""
-get_pkg_uuid(name::AbstractString) = @chain Pkg.dependencies() begin
-	values
-	[x for x in _ if x.name == name]
-	only
-	_.UUID
-end
-uuid_value = get_pkg_uuid("DataFrames")
 
 
 """
@@ -347,9 +328,9 @@ end
 Get the key(s) matching a particular package name
 
 # Example
-x = Pkg.dependencies();
+d = Pkg.dependencies();
 tmpstr = "DataFrames"
-matching_keys_UUIDs = get_keys_matching_name(x, tmpstr)
+matching_keys_UUIDs = get_keys_matching_name(d, tmpstr)
 uuid_strs = UUIDs_to_string(matching_keys_UUIDs)
 uuid_strs[1]
 """
@@ -357,16 +338,31 @@ function get_keys_matching_name(d::Dict{UUID, Pkg.API.PackageInfo}, tmpstr::Stri
 	key_value = [k for (k,v) in d if has_name(v, tmpstr)]
 end
 
+"""
+Get the key(s) matching a particular package name
+
+# Example
+tmpstr = "DataFrames"
+uuid_strs = get_pkg_uuid(tmpstr)
+uuid_strs[1]
+"""
+function get_pkg_uuid(tmpstr::String)
+	d = Pkg.dependencies()
+	matching_keys_UUIDs = get_keys_matching_name(d, tmpstr)
+	uuid_strs = UUIDs_to_string(matching_keys_UUIDs)
+	return(uuid_strs)
+end
+
 
 """
 Turn a vector of UUID objects into a vector of strings of uuids
 
 # Example
-x = Pkg.dependencies();
+d = Pkg.dependencies();
 tmpstr = "DataFrames"
-get_keys_matching_value(x, tmpstr)
-
-
+matching_keys_UUIDs = get_keys_matching_name(d, tmpstr)
+uuid_strs = UUIDs_to_string(matching_keys_UUIDs)
+uuid_strs[1]
 """
 function UUIDs_to_string(z::Vector{UUID})
 	uuid_strs = repeat([""], length(z))
