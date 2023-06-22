@@ -9,6 +9,7 @@ export hello_PhyloBits, add_one_PhyloBits
 print("\nPhyloBits: loading PhyloBits.jl.\n")
 
 
+using Pkg						# for Pkg.dependencies()
 using CSV						# for CSV.read(file, DataFrame; delim="\t")
 using Distributed 	# for workers, spawnat :any, etc.
 using Hwloc					# for Hwloc.num_physical_cores(), Hwloc.num_virtual_cores()
@@ -17,6 +18,8 @@ using StatsBase
 using StaticArrays	# for SVector
 using DataFrames
 using Printf
+using Chain					# for get_pkg_version, @chain
+using UUIDs					# for UUID() object
 
 
 print("For multithreading purposes, Threads.nthreads() = ")
