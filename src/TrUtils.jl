@@ -21,7 +21,7 @@ using UUIDs					# for UUID() object
 
 print("...done.\n")
 
-export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, get_pkg_uuid, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
+export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, get_pkg_uuid, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, colSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -1136,6 +1136,8 @@ Version of R's rowSums
 Designed for 2-dimensional matrices. Technically, it will return 
 a vector of the 2nd dimension of the Matrix/Array
 
+d_val = 0.034
+e_val = 0.028
 Qmat = [0.0 0.0 0.0 0.0;
 e_val 0.0 0.0 d_val;
 e_val 0.0 0.0 d_val;
@@ -1147,11 +1149,73 @@ Qmat[make_diag_TF(Qmat)] .= flat2(sum(Qmat; dims=2))
 u0 = [0, 0.125, 0.75, 0.125]
 
 """
-function rowSums(Qmat)
+function rowSums(Qmat::Matrix{Float64})
 	return flat2(sum(Qmat; dims=2))
 end
 
+"""
+Version of R's rowSums
+Designed for a vector of 1D matrices.
+d_val = 0.034
+e_val = 0.028
+Qmat = [[0.0 0.0 0.0 0.0],
+[e_val 0.0 0.0 d_val],
+[e_val 0.0 0.0 d_val],
+[0.0 e_val e_val 0.0]]
 
+
+sum.(Qmat)
+"""
+function rowSums(Qmat::Vector{Matrix{Float64})
+	return sum.(Qmat)
+end
+
+"""
+Version of R's rowSums
+Designed for a vector of vectors.
+d_val = 0.034
+e_val = 0.028
+nums =  [0.0 0.0 0.0 0.0;
+e_val 0.0 0.0 d_val;
+e_val 0.0 0.0 d_val;
+0.0 e_val e_val 0.0]
+n = 4
+Qmat = [Vector{Float64}(undef, n) for _ = 1:n]
+Qmat[1] .= nums[1,:]
+Qmat[2] .= nums[2,:]
+Qmat[3] .= nums[3,:]
+Qmat[4] .= nums[4,:]
+type(Qmat)
+
+sum.(Qmat)
+"""
+function rowSums(Qmat::Vector{Vector{Float64}})
+	return sum.(Qmat)
+end
+
+
+
+"""
+Sum the (numeric) rows of a DataFrame
+d_val = 0.034
+e_val = 0.028
+Qmat = [0.0 0.0 0.0 0.0;
+e_val 0.0 0.0 d_val;
+e_val 0.0 0.0 d_val;
+0.0 e_val e_val 0.0]
+
+df = DataFrame(Qmat, :auto)
+"""
+function rowSums(df::DataFrame)
+	sum.(eachrow(df[:, names(df, Real)]))
+end
+
+"""
+Sum the (numeric) columns of a DataFrame
+"""
+function colSums(df::DataFrame)
+	sum.(eachcol(df[:, names(df, Real)]))
+end
 
 
 
