@@ -1166,7 +1166,7 @@ Qmat = [[0.0 0.0 0.0 0.0],
 
 sum.(Qmat)
 """
-function rowSums(Qmat::Vector{Matrix{Float64})
+function rowSums(Qmat::Vector{Matrix{Float64}})
 	return sum.(Qmat)
 end
 
