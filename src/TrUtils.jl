@@ -21,7 +21,7 @@ using UUIDs					# for UUID() object
 
 print("...done.\n")
 
-export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, rename_df!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, get_pkg_uuid, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, colSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
+export hello_world_TrUtils, opd, opf, ls, list.files, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, rename_df!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, get_pkg_uuid, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, colSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -30,6 +30,41 @@ export hello_world_TrUtils, offdiag, make_diag_TF, make_offdiag_TF, convert_df_d
 function hello_world_TrUtils()
 	display("PhyloBits.TrUtils.hello_world_TrUtils() says hello on 2022-06-13_abc")
 end
+
+
+"""
+Run the Terminal command "open ."
+"""
+function opd()
+	run(`open .`);
+end
+
+
+"""
+Open a filename (fn) via the Terminal "open" command
+
+fn = "/Users/nmat471/HD/GitHub/PhyBEARS.jl/ex/cinthy/optim_results.txt"
+opf(fn)
+"""
+function opf(fn)
+	run(`open $fn`);
+end
+
+
+"""
+Run the Terminal command "open ."
+"""
+function ls()
+	run(`ls - la`);
+end
+
+"""
+Run the Terminal command "open ."
+"""
+function list.files()
+	run(`ls - la`);
+end
+
 
 
 """
