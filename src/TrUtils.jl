@@ -21,7 +21,7 @@ using UUIDs					# for UUID() object
 
 print("...done.\n")
 
-export hello_world_TrUtils, opd, opf, ls, list_files, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, rename_df!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, get_pkg_uuid, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, colSums, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
+export hello_world_TrUtils, opd, opf, ls, list_files, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, rename_df!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, get_pkg_uuid, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, colSums, rowSums_df, colSums_df, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -1258,6 +1258,43 @@ Sum the (numeric) columns of a DataFrame
 """
 function colSums(df::DataFrame)
 	sum.(eachcol(df[:, names(df, Real)]))
+end
+
+
+"""
+# Sum the (numeric) rows of a DataFrame
+df = DataFrame(AbstractVector[Any["adamsii", "albicans", "amplexicaulis", "annulata", "arganthera"], Any["1", "1", "0", "0", "0"], Any["0", "1", "1", "1", "1"]], DataFrames.Index(Dict(:M => 3, :tipnames => 1, :L => 2), [:tipnames, :L, :M]))
+df
+rowSums_df(df)
+colSums_df(df)
+"""
+function rowSums_df(df::DataFrame)
+	rowsum_results = repeat([0.0], Rnrow(df))
+	tmprow = repeat([0.0], Rncol(df))
+	for i in 1:Rnrow(df)
+		parse_result = tryparse.(Float64, flat2(df[i,:]))
+		tmprow[parse_result .== nothing] .= 0.0
+		rowsum_results[i] = sum(tmprow)
+	end
+	return rowsum_results
+end
+
+"""
+# Sum the (numeric) rows of a DataFrame
+df = DataFrame(AbstractVector[Any["adamsii", "albicans", "amplexicaulis", "annulata", "arganthera"], Any["1", "1", "0", "0", "0"], Any["0", "1", "1", "1", "1"]], DataFrames.Index(Dict(:M => 3, :tipnames => 1, :L => 2), [:tipnames, :L, :M]))
+df
+rowSums_df(df)
+colSums_df(df)
+"""
+function colSums_df(df::DataFrame)
+	colsum_results = repeat([0.0], Rncol(df))
+	tmpcol = repeat([0.0], Rnrow(df))
+	for (i,col) in enumerate(eachcol(df))
+		parse_result = tryparse.(Float64, col)
+		tmpcol[parse_result .== nothing] .= 0.0
+		colsum_results[i] = sum(tmpcol)
+	end
+	return colsum_results
 end
 
 
