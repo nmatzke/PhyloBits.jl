@@ -809,8 +809,8 @@ end
 
 
 # cbind()
-function Rcbind(A...; makeunique=true)
-	hcat(A...; makeunique=makeunique)
+function Rcbind(A...)
+	hcat(A...)
 end
 
 # rbind
