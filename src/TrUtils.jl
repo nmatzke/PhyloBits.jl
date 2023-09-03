@@ -781,7 +781,7 @@ R_in_vv_ints is for when the input a is a vector of integer vectors
 Any vector elements that are either blank, or multiple, are converted to nanval.
 """
 function R_in_vv_ints(a, b; nanval=-999)
-	vv_to_v_ints(a; nanval=nanval)
+	vec_for_a = vv_to_v_ints(a; nanval=nanval)
 	matchcount = collect(repeat([0], length(vec_for_a)))
 	matchfoundTF = collect(repeat([false], length(vec_for_a)))
 	for i in 1:length(b)
