@@ -21,7 +21,7 @@ using UUIDs					# for UUID() object
 
 print("...done.\n")
 
-export hello_world_TrUtils, opd, opf, ls, list_files, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, rename_df!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, get_pkg_uuid, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, colSums, rowSums_df, colSums_df, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
+export hello_world_TrUtils, opd, opf, ls, list_files, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, rename_df!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, get_pkg_uuid, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, subset_vec_of_vecs, subsetvv, subvv, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, colSums, rowSums_df, colSums_df, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -1063,6 +1063,38 @@ function get_max_df_diffs_byCol(df1, df2)
 	end
 	return(max_diffs)
 end
+
+
+
+
+
+
+"""
+Subset a vector of vectors, so that each inner vector keeps only
+the indices specified in statenums_to_keep
+"""
+function subset_vec_of_vecs(vv, statenums_to_keep)
+	# New vector of vectors
+	nrows = length(vv)
+	ncols = length(statenums_to_keep)
+	newvv = [Vector{Float64}(zeros(ncols)) for _ = 1:nrows]
+	for i in 1:nrows
+		newvv[i] .= vv[i][statenums_to_keep]
+	end
+	return newvv
+end
+
+"""
+Subset a vector of vectors, so that each inner vector keeps only
+the indices specified in statenums_to_keep
+"""
+subsetvv = subset_vec_of_vecs
+
+"""
+Subset a vector of vectors, so that each inner vector keeps only
+the indices specified in statenums_to_keep
+"""
+subvv = subset_vec_of_vecs
 
 
 
