@@ -21,7 +21,7 @@ using UUIDs					# for UUID() object
 
 print("...done.\n")
 
-export hello_world_TrUtils, opd, opf, ls, list_files, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, rename_df!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, get_pkg_uuid, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, subset_vec_of_vecs, subsetvv, subvv, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, colSums, rowSums_df, colSums_df, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
+export hello_world_TrUtils, opd, opf, ls, list_files, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, rename_df!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, get_pkg_uuid, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, R_in, R_in_vv_ints, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, subset_vec_of_vecs, subsetvv, subvv, vector_of_vectors_to_df, vvdf, vfft, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, colSums, rowSums_df, colSums_df, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -750,9 +750,67 @@ function Rchoose(n,k)
 end
 
 
+"""
+R_in
+
+Returns true/false for each item in a, if it is found somewhere in b
+
+Kind of like R's %in% function/operator
+"""
+function R_in(a, b)
+	matchcount = collect(repeat([0], length(a)))
+	matchfoundTF = collect(repeat([false], length(a)))
+	for i in 1:length(b)
+		matchfoundTF = a .== b[i]
+		matchcount = matchcount .+ matchfoundTF
+	end
+	
+	matchfoundTF .= matchcount .> 0
+	return matchfoundTF
+end
+
+"""
+R_in_vv
+
+Returns true/false for each item in a, if it is found somewhere in b
+
+Kind of like R's %in% function/operator
+
+R_in_vv_ints is for when the input a is a vector of integer vectors
+
+Any vector elements that are either blank, or multiple, are converted to nanval.
+"""
+function R_in_vv_ints(a, b; nanval=-999)
+	vv_to_v_ints(a; nanval=nanval)
+	matchcount = collect(repeat([0], length(vec_for_a)))
+	matchfoundTF = collect(repeat([false], length(vec_for_a)))
+	for i in 1:length(b)
+		matchfoundTF = vec_for_a .== b[i]
+		matchcount = matchcount .+ matchfoundTF
+	end
+	
+	matchfoundTF .= matchcount .> 0
+	return matchfoundTF
+end
+
+function vv_to_v_ints(a; nanval=-999)
+	# Process the vv to just a vector;
+	# vector items that are multiple are automatically FALSE for matches
+	vec_for_a = collect(repeat([nanval], length(a)))
+	for i in 1:length(a)
+		if (length(a[i]) == 1)
+			vec_for_a[i] = a[i][1]
+		else
+			vec_for_a[i] = nanval
+		end
+	end
+	return vec_for_a
+end
+
+
 # cbind()
-function Rcbind(A...)
-	hcat(A...)
+function Rcbind(A...; makeunique=true)
+	hcat(A...; makeunique=makeunique)
 end
 
 # rbind
