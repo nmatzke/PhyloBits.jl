@@ -1664,4 +1664,7 @@ function isnan2(x::Any)
 	else
 		return(false)
 	end
+end # END function isnan2(x::Any)
+	
+	
 end # end of module
