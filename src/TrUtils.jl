@@ -1281,7 +1281,7 @@ end
 
 # Flattens an array of arrays into a vector
 # Similar to R's unlist()
-function flat2(DataFrame::arr)
+function flat2(arr::DataFrame)
     rst = Any[]
     grep(v) = for x in v
         if isa(x, Array) grep(x) else push!(rst, x) end
