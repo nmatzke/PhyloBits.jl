@@ -518,6 +518,8 @@ end
 
 
 
+
+
 """
 # Read a tab-delimited text file
 fn = "/GitHub/PhyBEARS.jl/notes/area_of_areas_NZ_Oz_v1.txt"
@@ -822,8 +824,8 @@ end
 
 
 # cbind()
-function Rcbind(A...)
-	hcat(A...)
+function Rcbind(A...; makeunique=true)
+	hcat(A...; makeunique=true)
 end
 
 # rbind
@@ -1002,6 +1004,19 @@ function append_txtvec(fn, txtvec; mode="a", delim="\t")
 		write(io, txt)
 	close(io)
 end
+
+
+"""
+Write a tree table, ground-truth ancestral state probabilities, 
+and Julia-inferred ancestral state probabilities to a text file
+
+Assumes all sorting to R node order has already been done.
+"""
+function write_trdf_ancstates(fn, title, trdf, df1, df2; mode="w", delim="\t")
+	write_txtvec(fn, title; mode=mode, delim=delim)
+	bigdf = Rcbind(trdf, df1, df2)
+end
+
 
 
 
