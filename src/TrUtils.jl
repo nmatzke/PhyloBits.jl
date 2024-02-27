@@ -1017,7 +1017,12 @@ mode="w"
 delim="\t"
 """
 function write_trdf_ancstates(fn, titlevec, trdf, df1, df2; mode="w", delim="\t")
-	write_txtvec(fn, titlevec; mode=mode, delim=delim)
+	
+	if (typeof(titlevec) == "String")
+		write_txtvec(fn, [titlevec]; mode=mode, delim=delim)
+	else
+		write_txtvec(fn, titlevec; mode=mode, delim=delim)
+	end
 	R_order = sort(trdf, :Rnodenums).nodeIndex
 	bigdf = hcat(trdf[R_order,:], df1, df2, makeunique=true)
 	
