@@ -824,8 +824,8 @@ end
 
 
 # cbind()
-function Rcbind(A..., makeunique=true)
-	hcat(A..., makeunique=makeunique)
+function Rcbind(A...)
+	hcat(A...)
 end
 
 # rbind
@@ -1014,7 +1014,7 @@ Assumes all sorting to R node order has already been done.
 """
 function write_trdf_ancstates(fn, title, trdf, df1, df2; mode="w", delim="\t")
 	write_txtvec(fn, title; mode=mode, delim=delim)
-	bigdf = Rcbind(trdf, df1, df2)
+	bigdf = hcat(trdf, df1, df2, makeunique=true)
 end
 
 
