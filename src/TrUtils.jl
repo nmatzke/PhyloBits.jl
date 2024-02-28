@@ -21,7 +21,7 @@ using UUIDs					# for UUID() object
 
 print("...done.\n")
 
-export hello_world_TrUtils, opd, opf, ls, list_files, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, rename_df!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, get_pkg_uuid, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, R_in, R_in_vv_ints, vv_to_v_ints, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, write_txt, append_txt, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, subset_vec_of_vecs, subsetvv, subvv, vector_of_vectors_to_df, vvdf, vfft, vec_to_vecvec, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, colSums, rowSums_df, colSums_df, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip, isnan2
+export hello_world_TrUtils, opd, opf, ls, list_files, offdiag, make_diag_TF, make_offdiag_TF, convert_df_datatypes!, rename_df!, nthreads_procs, get_installed_path, pp, get_pkg_version, get_pkg_status, has, has_name, get_keys_matching_value, get_keys_matching_name, UUIDs_to_string, get_pkg_uuid, merge_paths, mp, merge_path_with_file, mpf, getwd, Rgetwd, setwd, getfn, readtable, numstxt_to_df, recursive_find, include_jls, source, get_a_most_common_value, indexed_Dict_to_DF, convert_is_js_to_single_index, pair_of_indices_to_single_index_column_first, dim, Rdim, seq, Rchoose, R_in, R_in_vv_ints, vv_to_v_ints, Rcbind, Rrbind, Rpaste, Rpaste0, paste, paste0, type, class, Rclass, odds, evens, slashslash, ss, addslash, write_txt, write_txtvec, append_txt, append_txtvec, write_trdf_ancstates, df_to_Rdata, Reval, Rdput, julian_dput, Rnames, rnames, rn, Rtypes, rtypes, compare_dfs, get_max_df_diffs_byCol, subset_vec_of_vecs, subsetvv, subvv, vector_of_vectors_to_df, vvdf, vfft, vec_to_vecvec, ont, Rnrow, Rncol, Rsize, Rorder, headLR, flat2, rowSums, colSums, rowSums_df, colSums_df, single_element_array_to_scalar, headf, moref, get_alphabets, LETTERS, letters, GREEKLETTERS, greekletters, greekletters2, scr2str, lagrange_to_tip, isnan2
 
 # cutting as it requires the loading of Plots (slow)
 # saveopen, 
@@ -966,6 +966,24 @@ function write_txt(fn, txt; mode="w")
 	close(io)
 end
 
+
+"""
+Write a vector/tuple to tab-delimited text.
+mode='w'  # = write over old file
+mode='a'  # = append to old file
+"""
+function write_txtvec(fn, txtvec; mode="w", delim="\t")
+	txt = paste0(txtvec; delim=delim)
+	txt = paste0([txt, "\n"]; delim="") # Add a line-end
+
+	io = open(fn, mode)
+		write(io, txt)
+	close(io)
+end
+
+
+
+
 """
 mode='w'  # = write over old file
 mode='a'  # = append to old file
@@ -976,6 +994,50 @@ function append_txt(fn, txt; mode="a")
 	end
 end
 
+
+
+"""
+Write a vector/tuple to tab-delimited text.
+mode='w'  # = write over old file
+mode='a'  # = append to old file
+"""
+function append_txtvec(fn, txtvec; mode="a", delim="\t")
+	txt = paste0(txtvec; delim=delim)
+	txt = paste0([txt, "\n"]; delim="") # Add a line-end
+
+	io = open(fn, mode)
+		write(io, txt)
+	close(io)
+end
+
+
+"""
+Write a tree table, ground-truth ancestral state probabilities, 
+and Julia-inferred ancestral state probabilities to a text file
+Assumes all sorting to R node order has already been done.
+title="topstates"
+mode="w"
+delim="\t"
+"""
+function write_trdf_ancstates(fn, titlevec, trdf, df1, df2; mode="w", delim="\t")
+
+	if (typeof(titlevec) == "String")
+		write_txtvec(fn, [titlevec]; mode=mode, delim=delim)
+	else
+		write_txtvec(fn, titlevec; mode=mode, delim=delim)
+	end
+	R_order = Rorder(trdf.Rnodenums)
+	bigdf = hcat(trdf[R_order,:], df1, df2, makeunique=true)
+
+	CSV.write(fn, bigdf; delim=delim, append=true, writeheader=true)
+
+	# Add the default "\n"
+	write_txtvec(fn, ""; mode="a", delim="")
+
+	#moref(fn)
+
+	return(fn)
+end
 
 
 
