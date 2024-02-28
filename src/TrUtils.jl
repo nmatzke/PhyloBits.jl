@@ -858,6 +858,8 @@ function paste0(array_of_strings; delim="")
 	return(newtxt)
 end
 
+
+
 """
 # type
 # Shortcut for julia's typeof()
@@ -1283,9 +1285,22 @@ function Rsize(obj)
 	return size(obj)
 end
 
+"""
+# Julia version of R's "order" function
+
+Makes Rorder() a shortcut for sortperm().
+
+x = [30, 10, 20]
+sortperm(x)
+Rorder(x)
+order(x)
+"""
 function Rorder(obj)
 	return sortperm(obj)
 end
+
+
+
 
 # Print the left and rightmost columns of a table
 function headLR(df, num_startcols=4, num_endcols=4)
