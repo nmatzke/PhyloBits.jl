@@ -39,11 +39,12 @@ The PhyloNetworks.jl package is licensed under the MIT "Expat" License:
 >
 
 
-For the code written by Nick Matzke, the MIT License is also used:
+For the code written by Nick Matzke and Wallis Bland, the MIT License is also used:
 
 MIT License
 
-Non-PhyloNetworks code in PhyloBits is Copyright (c) 2022- Nicholas J. Matzke
+Non-PhyloNetworks code in PhyloBits is Copyright (c) 2024-present Nicholas J. Matzke 
+and Wallis Bland
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
